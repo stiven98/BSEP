@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.bsep.service;
 
 import java.math.BigInteger;
+import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -12,10 +13,14 @@ import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.bsep.domain.dto.IssuerDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.SubjectDTO;
 
+
+@Service
 public class CertificateGenerator {
+
     public CertificateGenerator() {}
 
     public X509Certificate generateCertificate(SubjectDTO subjectData, IssuerDTO issuerData) {
@@ -46,4 +51,21 @@ public class CertificateGenerator {
         }
         return null;
     }
+
+
+
+    public KeyPair generateKeyPair() {
+        try {
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+            keyGen.initialize(2048, random);
+            return keyGen.generateKeyPair();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

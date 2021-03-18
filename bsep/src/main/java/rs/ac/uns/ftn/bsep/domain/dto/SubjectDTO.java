@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.bsep.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class SubjectDTO {
     private PublicKey publicKey;
     private X500Name x500name;

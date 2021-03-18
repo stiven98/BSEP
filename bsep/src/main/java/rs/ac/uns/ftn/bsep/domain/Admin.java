@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.bsep.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import java.security.PrivateKey;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Admin {
     private PrivateKey privateKey;
     private X500Name x500name;
