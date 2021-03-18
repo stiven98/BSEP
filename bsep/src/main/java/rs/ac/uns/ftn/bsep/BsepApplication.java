@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.bsep;
 
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import rs.ac.uns.ftn.bsep.domain.dto.IssuerDTO;
@@ -23,8 +24,7 @@ public class BsepApplication {
 	public static void main(String[] args) {
 
 
-
-		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+		Security.addProvider(new BouncyCastleProvider());
 
 		CertificateGenerator c = new CertificateGenerator();
 		KeyPair keyPair = c.generateKeyPair();
@@ -79,15 +79,15 @@ public class BsepApplication {
 		aaaaa[0] = 'a';
 		aaaaa[1] = '3';
 
-		o.saveKeyStore("imeee",aaaaa);
+		o.loadKeyStore("testFile",aaaaa);
 
-		o.loadKeyStore("imeee",aaaaa);
+		o.write("primera1",keyPair.getPrivate(),aaaaa,sssss);
 
-		o.write("primer",keyPair.getPrivate(),aaaaa,sssss);
+		o.saveKeyStore("testFile",aaaaa);
 
 		KeyStoreReader ksr = new KeyStoreReader();
 
-		Certificate certificate =  ksr.readCertificate("imeee","a3","primer");
+		Certificate certificate =  ksr.readCertificate("testFile","a3","primera1");
 
 
 		System.out.println("\n===== Sertifikat =====");

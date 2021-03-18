@@ -50,7 +50,6 @@ public class KeyStoreWriter {
 
     public void saveKeyStore(String fileName, char[] password) {
         try {
-            keyStore.load(null,password);
             keyStore.store(new FileOutputStream(fileName), password);
         } catch (KeyStoreException e) {
             e.printStackTrace();
