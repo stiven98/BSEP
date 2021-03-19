@@ -1,25 +1,20 @@
-package rs.ac.uns.ftn.bsep.service.keystores;
+package rs.ac.uns.ftn.bsep.repository.filerepository.impl;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
+import rs.ac.uns.ftn.bsep.repository.filerepository.FileWriterRepository;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
-@Service
-public class KeyStoreWriter {
-    //KeyStore je Java klasa za citanje specijalizovanih datoteka koje se koriste za cuvanje kljuceva
-    //Tri tipa entiteta koji se obicno nalaze u ovakvim datotekama su:
-    // - Sertifikati koji ukljucuju javni kljuc
-    // - Privatni kljucevi
-    // - Tajni kljucevi, koji se koriste u simetricnima siframa
+
+@Repository
+public class FileWriterRepositoryImpl implements FileWriterRepository {
+
     private KeyStore keyStore;
 
-    public KeyStoreWriter() {
+    public FileWriterRepositoryImpl(){
         try {
             keyStore = KeyStore.getInstance("JKS", "SUN");
         } catch (KeyStoreException e) {
@@ -29,12 +24,12 @@ public class KeyStoreWriter {
         }
     }
 
+    @Override
     public void loadKeyStore(String fileName, char[] password) {
-        try {
+        try{
             if(fileName != null) {
                 keyStore.load(new FileInputStream(fileName), password);
             } else {
-                //Ako je cilj kreirati novi KeyStore poziva se i dalje load, pri cemu je prvi parametar null
                 keyStore.load(null, password);
             }
         } catch (NoSuchAlgorithmException e) {
@@ -42,13 +37,15 @@ public class KeyStoreWriter {
         } catch (CertificateException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            this.init(fileName,password);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public void saveKeyStore(String fileName, char[] password) {
+
         try {
             keyStore.store(new FileOutputStream(fileName), password);
         } catch (KeyStoreException e) {
@@ -64,10 +61,29 @@ public class KeyStoreWriter {
         }
     }
 
+    @Override
     public void write(String alias, PrivateKey privateKey, char[] password, Certificate certificate) {
         try {
             keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
         } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void init(String fileName, char[] password) {
+        try {
+            keyStore.load(null, password);
+            keyStore.store(new FileOutputStream(fileName), password);
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
