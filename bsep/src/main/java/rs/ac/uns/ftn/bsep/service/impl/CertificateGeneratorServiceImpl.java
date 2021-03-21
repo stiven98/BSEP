@@ -9,8 +9,12 @@ import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.IssuerDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.SubjectDTO;
+import rs.ac.uns.ftn.bsep.domain.enums.CErtificateStatus;
+import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
+import rs.ac.uns.ftn.bsep.domain.enums.EntityType;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.CertificateRepository;
 import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
 import rs.ac.uns.ftn.bsep.service.FileWriterService;
@@ -20,6 +24,8 @@ import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.security.spec.ECGenParameterSpec;
+import java.util.Date;
 
 @Service
 public class CertificateGeneratorServiceImpl implements CertificateGeneratorService {
@@ -29,9 +35,6 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
 
     @Autowired
     CertificateRepository certificateRepository;
-
-
-
 
     @Override
     public X509Certificate generateCertificate(SubjectDTO subjectData, IssuerDTO issuerData, String type) {
@@ -67,6 +70,25 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     }
 
     @Override
+    public Certificate saveCertificateInDB(Certificate certificate) {
+        Certificate c = new Certificate();
+        c.setCertificateType(CertificateType.root);
+        c.setEndDate(new Date());
+        c.setStartDate(new Date());
+        c.setCErtificateStatus(CErtificateStatus.activate);
+        c.setKeyUsage("digital");
+        c.setSerialNumber("acoaco123");
+        c.setVersion("1.0");
+        KeyPair jovan= generateKeyPair();
+        c.setPublicKey(jovan.getPublic().toString());
+        c.setSubject("Djole");
+        c.setType(EntityType.service);
+        c.setIssuer(c);
+
+        return certificateRepository.save(c);
+    }
+
+    @Override
     public void saveCertificate(X509Certificate certificate, String type, IssuerDTO issuerData) {
         if(type.equals("ROOT")){
             String password = "Pa33w0rd-123";
@@ -85,13 +107,17 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
 
     public KeyPair generateKeyPair() {
         try {
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-            keyGen.initialize(2048, random);
+            //treb da bude ECC algoritam i kljuc treba da bude 256bita!!!!!
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC","SunEC");
+            ECGenParameterSpec ecsp;
+            ecsp = new ECGenParameterSpec("secp256r1");
+            keyGen.initialize(ecsp);
             return keyGen.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
         return null;
