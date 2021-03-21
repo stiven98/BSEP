@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.IssuerDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.SubjectDTO;
-import rs.ac.uns.ftn.bsep.domain.enums.CErtificateStatus;
+import rs.ac.uns.ftn.bsep.domain.enums.CertificateStatus;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.domain.enums.EntityType;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.CertificateRepository;
@@ -25,7 +25,9 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CertificateGeneratorServiceImpl implements CertificateGeneratorService {
@@ -75,7 +77,7 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         c.setCertificateType(CertificateType.root);
         c.setEndDate(new Date());
         c.setStartDate(new Date());
-        c.setCErtificateStatus(CErtificateStatus.activate);
+        c.setCErtificateStatus(CertificateStatus.activate);
         c.setKeyUsage("digital");
         c.setSerialNumber("acoaco123");
         c.setVersion("1.0");
@@ -122,5 +124,34 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         }
         return null;
     }
+
+    public boolean isValid(Certificate certificate,Date startDate){
+        if(certificate.getEndDate().after(startDate) && certificate.getCErtificateStatus()== CertificateStatus.activate){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Certificate> getAllValidateCertificates(Date startDate){
+        List<Certificate> ret=new ArrayList<>();
+        for (Certificate c: certificateRepository.findAll()) {
+            if(c.getCertificateType()== CertificateType.root && isValid(c, startDate)){
+                System.out.println(c.getSubject());
+                ret.add(c);
+            }else {
+                Certificate issuer=c;
+                while (issuer.getCertificateType() != CertificateType.root) {
+                    if (c.getCertificateType() != CertificateType.endEntity && isValid(c, startDate) && isValid(issuer.getIssuer(), startDate)  && c.getIssuer().getCertificateType()== CertificateType.root ) {
+                        ret.add(c);
+                        System.out.println(c.getSubject());
+                    }
+                    issuer=issuer.getIssuer();
+                }
+            }
+        }
+        return ret;
+    }
+
 
 }

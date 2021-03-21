@@ -1,6 +1,6 @@
 package rs.ac.uns.ftn.bsep.domain.enums;
 
-public enum CErtificateStatus {
+public enum CertificateStatus {
     activate,
     revoked,
     inactive
