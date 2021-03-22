@@ -13,7 +13,7 @@ public interface CertificateGeneratorService {
     X509Certificate generateRootCertificate(CertificateDataDTO certificateData);
     X509Certificate generateCertificate(CertificateDataDTO certificateData);
     void saveCertificate(X509Certificate certificate, CertificateType type, PrivateKey privateKey);
-    Certificate saveCertificateInDB(X509Certificate x509Certificate);
-    List<Certificate> getAllValidateCertificates(Date startDate);
+    Certificate saveCertificateInDB(Certificate c);
+    List<Certificate> getAllValidCertificates(Date startDate, Date endDate);
     List<Certificate> getAll();
 }
