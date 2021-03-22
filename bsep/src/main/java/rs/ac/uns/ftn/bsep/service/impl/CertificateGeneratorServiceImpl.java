@@ -66,6 +66,7 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             this.saveCertificate(certificate,CertificateType.root,subjectKP.getPrivate());
             Certificate db = new Certificate();
             db.setIssuer(certificateData.getSubjectSerialNumber());
+            db.setIssuerType(CertificateType.root);
             db.setCertificateType(certificateData.getCertificateType());
             db.setSerialNumber(certificateData.getSubjectSerialNumber());
             db.setOrganization(certificateData.getOrganization());
@@ -128,6 +129,7 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             this.saveCertificate(certificate,certificateData.getCertificateType(),subjectKP.getPrivate());
             Certificate db = new Certificate();
             db.setIssuer(certificateData.getIssuerSerialNumber());
+            db.setIssuerType(certificateData.getIssuerType());
             db.setCertificateType(certificateData.getCertificateType());
             db.setSerialNumber(certificateData.getSubjectSerialNumber());
             db.setOrganization(certificateData.getOrganization());
@@ -252,26 +254,58 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         for(Certificate c : certificateRepository.getALLValid(startDate,endDate)){
             X509Certificate issuer = readCertificate(c.getIssuer(),c.getIssuerType());
             X509Certificate subject = readCertificate(c.getSerialNumber(),c.getCertificateType());
-            try {
-                subject.verify(issuer.getPublicKey(), "BC");
-                if(c.getIssuerType() != CertificateType.root){
-
-                }else
-                    list.add(c);
-            } catch (CertificateException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
-            } catch (SignatureException e) {
-                e.printStackTrace();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
+            if(checkSignature(issuer, subject)){
+                list.add(c);
             }
         }
+        return list;
+    }
 
-        return null;
+    private boolean checkSignature(X509Certificate issuer, X509Certificate subject){
+        if(issuer.getSerialNumber() == subject.getSerialNumber()){
+            try {
+                Security.addProvider(new BouncyCastleProvider());
+                subject.verify(issuer.getPublicKey(), "BC");
+                return true;
+            } catch (CertificateException e) {
+                e.printStackTrace();
+                return false;
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                return false;
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+                return false;
+            } catch (SignatureException e) {
+                e.printStackTrace();
+                return false;
+            } catch (NoSuchProviderException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }else{
+            X509Certificate newIssuer = readCertificateBlind(issuer.getSerialNumber().toString());
+            try {
+                Security.addProvider(new BouncyCastleProvider());
+                subject.verify(issuer.getPublicKey(), "BC");
+                return checkSignature(newIssuer, issuer);
+            } catch (CertificateException e) {
+                e.printStackTrace();
+                return false;
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                return false;
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+                return false;
+            } catch (SignatureException e) {
+                e.printStackTrace();
+                return false;
+            } catch (NoSuchProviderException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
     }
 
     @Override
@@ -296,4 +330,19 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         }
     }
 
+    private X509Certificate readCertificateBlind(String alias){
+            String password = "Pa33w0rd-123";
+            X509Certificate certificate = (X509Certificate) fileReaderService.readCertificate("root", password,alias);
+            if(certificate != null){
+                return certificate;
+            }
+            password = "31fRaT-654";
+            certificate = (X509Certificate) fileReaderService.readCertificate("intermediate", password,alias);
+            if(certificate != null){
+                return certificate;
+            }
+            password = "528-3waGeeR";
+            certificate = (X509Certificate)fileReaderService.readCertificate("endEntity", password, alias);
+            return certificate;
+        }
 }
