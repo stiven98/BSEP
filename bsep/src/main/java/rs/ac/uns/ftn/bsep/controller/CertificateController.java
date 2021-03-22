@@ -7,10 +7,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
+import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.DateDTO;
+import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,24 @@ public class CertificateController {
 
     @Autowired
     CertificateGeneratorService certificateGeneratorService;
+
+
+
+
+    @PostMapping("/create")
+    public ResponseEntity<?>CreateCertificate(@RequestBody CertificateDataDTO cet) {
+        if(cet.getCertificateType() == CertificateType.root){
+            if(certificateGeneratorService.generateRootCertificate(cet) != null){
+                return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
+            }
+            else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
+        }
+        if(certificateGeneratorService.generateCertificate(cet) != null){
+            return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
+        }
+        else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
+    }
+
 
     @PostMapping("/proba")
     public List<Certificate> getAllValidIssuers(@RequestBody DateDTO date){

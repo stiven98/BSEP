@@ -30,6 +30,8 @@ public class CertificateDataDTO {
     private String email;
 
     public X500Name convertToX500Name(){
+
+
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
         builder.addRDN(BCStyle.CN, this.commonName);
         builder.addRDN(BCStyle.SURNAME, this.lastName);
@@ -39,5 +41,24 @@ public class CertificateDataDTO {
         builder.addRDN(BCStyle.C, this.country);
         builder.addRDN(BCStyle.E, this.email);
         return builder.build();
+    }
+
+
+    @Override
+    public String toString() {
+        return "CertificateDataDTO{" +
+                "issuerSerialNumber='" + issuerSerialNumber + '\'' +
+                ", issuerType=" + issuerType +
+                ", certificateType=" + certificateType +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", commonName='" + commonName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", organization='" + organization + '\'' +
+                ", organizationUnit='" + organizationUnit + '\'' +
+                ", country='" + country + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

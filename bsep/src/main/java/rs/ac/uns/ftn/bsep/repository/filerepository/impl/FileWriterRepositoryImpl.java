@@ -28,6 +28,7 @@ public class FileWriterRepositoryImpl implements FileWriterRepository {
     public void loadKeyStore(String fileName, char[] password) {
         try{
             if(fileName != null) {
+                System.out.println("Load key store");
                 keyStore.load(new FileInputStream(fileName), password);
             } else {
                 keyStore.load(null, password);
@@ -64,7 +65,9 @@ public class FileWriterRepositoryImpl implements FileWriterRepository {
     @Override
     public void write(String alias, PrivateKey privateKey, char[] password, Certificate certificate) {
         try {
+            System.out.println("Write");
             keyStore.setKeyEntry(alias, privateKey, password, new Certificate[] {certificate});
+            System.out.println(keyStore.size());
         } catch (KeyStoreException e) {
             e.printStackTrace();
         }

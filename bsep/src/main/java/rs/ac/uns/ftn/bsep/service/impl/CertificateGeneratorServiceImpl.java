@@ -6,6 +6,7 @@ import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
@@ -21,15 +22,12 @@ import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
 import rs.ac.uns.ftn.bsep.service.FileReaderService;
 import rs.ac.uns.ftn.bsep.service.FileWriterService;
 
-import javax.security.auth.x500.X500Principal;
 import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,18 +47,19 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     @Override
     public X509Certificate generateRootCertificate(CertificateDataDTO certificateData) {
         try {
-            JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
+
+            Security.addProvider(new BouncyCastleProvider());
+
+            JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithECDSA");
             builder = builder.setProvider("BC");
-            PrivateKey issuerPrivateKey = getPrivateKey(certificateData);
-            ContentSigner contentSigner = builder.build(issuerPrivateKey);
+            KeyPair subjectKP = generateKeyPair();
+            ContentSigner contentSigner = builder.build(subjectKP.getPrivate());
             Date now = new Date();
             Long time = now.getTime();
-            Double salt = 1000000 * Math.random();
-            String serNumber = time.toString() + salt.toString();
-            X500Name x500Name = new JcaX509CertificateHolder((X509Certificate) getCertificate(certificateData)).getSubject();
-            KeyPair subjectKP = generateKeyPair();
-            //new X500Name(getCertificate(certificateData).getIssuerX500Principal().getName(X500Principal.RFC1779));
-            X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(x500Name,
+            Double salt =1000000 * Math.random();
+            Long lsalt = salt.longValue();
+            String serNumber = time.toString() + lsalt.toString();
+            X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(certificateData.convertToX500Name(),
                     new BigInteger(serNumber),
                     certificateData.getStartDate(),
                     certificateData.getEndDate(),
@@ -70,7 +69,16 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             JcaX509CertificateConverter certConverter = new JcaX509CertificateConverter();
             certConverter = certConverter.setProvider("BC");
             X509Certificate certificate = certConverter.getCertificate(certHolder);
-            this.saveCertificate(certificate,certificateData.getCertificateType(),subjectKP.getPrivate());
+            this.saveCertificate(certificate,CertificateType.root,subjectKP.getPrivate());
+            System.out.println("\n===== Podaci o izdavacu sertifikata =====");
+            System.out.println(certificate.getIssuerX500Principal().getName());
+            System.out.println("\n===== Podaci o vlasniku sertifikata =====");
+            System.out.println(certificate.getSubjectX500Principal().getName());
+            System.out.println("\n===== Sertifikat =====");
+            System.out.println("-------------------------------------------------------");
+            System.out.println(certificate);
+            System.out.println("-------------------------------------------------------");
+
 
             return certificate;
         } catch (CertificateEncodingException e) {
@@ -91,14 +99,17 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     @Override
     public X509Certificate generateCertificate(CertificateDataDTO certificateData) {
         try {
-            JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
+            Security.addProvider(new BouncyCastleProvider());
+
+            JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithECDSA");
             builder = builder.setProvider("BC");
             PrivateKey issuerPrivateKey = getPrivateKey(certificateData);
             ContentSigner contentSigner = builder.build(issuerPrivateKey);
             Date now = new Date();
             Long time = now.getTime();
             Double salt = 1000000 * Math.random();
-            String serNumber = time.toString() + salt.toString();
+            Long lsalt = salt.longValue();
+            String serNumber = time.toString() + lsalt.toString();
             X500Name x500Name = new JcaX509CertificateHolder((X509Certificate) getCertificate(certificateData)).getSubject();
             KeyPair subjectKP = generateKeyPair();
             //new X500Name(getCertificate(certificateData).getIssuerX500Principal().getName(X500Principal.RFC1779));
@@ -113,6 +124,15 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             certConverter = certConverter.setProvider("BC");
             X509Certificate certificate = certConverter.getCertificate(certHolder);
             this.saveCertificate(certificate,certificateData.getCertificateType(),subjectKP.getPrivate());
+
+            System.out.println("\n===== Podaci o izdavacu sertifikata =====");
+            System.out.println(certificate.getIssuerX500Principal().getName());
+            System.out.println("\n===== Podaci o vlasniku sertifikata =====");
+            System.out.println(certificate.getSubjectX500Principal().getName());
+            System.out.println("\n===== Sertifikat =====");
+            System.out.println("-------------------------------------------------------");
+            System.out.println(certificate);
+            System.out.println("-------------------------------------------------------");
 
             return certificate;
         } catch (CertificateEncodingException e) {
@@ -154,16 +174,20 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     public void saveCertificate(X509Certificate certificate, CertificateType type, PrivateKey privateKey) {
         if(type == CertificateType.root){
             String password = "Pa33w0rd-123";
+            System.out.println("USAO ovde");
             fileWriterService.loadKeyStore("root",password.toCharArray());
             fileWriterService.write(certificate.getSerialNumber().toString(), privateKey ,password.toCharArray(),certificate);
+            fileWriterService.saveKeyStore("root",password.toCharArray());
         }else if (type == CertificateType.intermediate){
             String password = "31fRaT-654";
             fileWriterService.loadKeyStore("intermediate",password.toCharArray());
             fileWriterService.write(certificate.getSerialNumber().toString(),privateKey,password.toCharArray(),certificate);
+            fileWriterService.saveKeyStore("intermediate",password.toCharArray());
         }else {
             String password = "528-3waGeeR";
             fileWriterService.loadKeyStore("endEntity",password.toCharArray());
             fileWriterService.write(certificate.getSerialNumber().toString(),privateKey,password.toCharArray(),certificate);
+            fileWriterService.saveKeyStore("endEntity",password.toCharArray());
         }
     }
 
@@ -201,7 +225,6 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
 
     public KeyPair generateKeyPair() {
         try {
-            //treb da bude ECC algoritam i kljuc treba da bude 256bita!!!!!
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC","SunEC");
             ECGenParameterSpec ecsp;
             ecsp = new ECGenParameterSpec("secp256r1");
