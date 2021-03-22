@@ -15,4 +15,5 @@ public interface CertificateGeneratorService {
     void saveCertificate(X509Certificate certificate, CertificateType type, PrivateKey privateKey);
     Certificate saveCertificateInDB(X509Certificate x509Certificate);
     List<Certificate> getAllValidateCertificates(Date startDate);
+    List<Certificate> getAll();
 }

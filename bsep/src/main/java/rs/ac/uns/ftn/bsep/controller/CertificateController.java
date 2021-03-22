@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/certificate", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin(origins = "http://localhost:8081")
 public class CertificateController {
 
     @Autowired
@@ -38,8 +39,12 @@ public class CertificateController {
         else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
     }
 
+    @GetMapping
+    public List<Certificate> getAll(){
+        return certificateGeneratorService.getAll();
+    }
 
-    @PostMapping("/proba")
+    @PostMapping("/validIssuers")
     public List<Certificate> getAllValidIssuers(@RequestBody DateDTO date){
         System.out.println(date.getDate());
         return certificateGeneratorService.getAllValidateCertificates(date.getDate());

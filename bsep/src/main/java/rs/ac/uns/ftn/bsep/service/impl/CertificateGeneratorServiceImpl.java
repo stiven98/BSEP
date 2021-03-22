@@ -268,5 +268,10 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         return ret;
     }
 
+    @Override
+    public List<Certificate> getAll() {
+        return certificateRepository.findAll();
+    }
+
 
 }
