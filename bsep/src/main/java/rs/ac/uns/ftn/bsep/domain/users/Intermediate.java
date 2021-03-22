@@ -16,7 +16,6 @@ public class Intermediate extends User {
 
     @OneToOne
     private SubjectData subjectData;
-
     @OneToOne
     private IssuerData issuerData;
 }

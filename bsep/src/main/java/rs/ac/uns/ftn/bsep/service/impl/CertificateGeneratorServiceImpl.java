@@ -1,8 +1,10 @@
 package rs.ac.uns.ftn.bsep.service.impl;
 
+import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
@@ -10,21 +12,24 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
-import rs.ac.uns.ftn.bsep.domain.dto.IssuerDTO;
-import rs.ac.uns.ftn.bsep.domain.dto.SubjectDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateStatus;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.domain.enums.EntityType;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.CertificateRepository;
 import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
+import rs.ac.uns.ftn.bsep.service.FileReaderService;
 import rs.ac.uns.ftn.bsep.service.FileWriterService;
 
+import javax.security.auth.x500.X500Principal;
 import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,25 +41,37 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     FileWriterService fileWriterService;
 
     @Autowired
+    FileReaderService fileReaderService;
+
+    @Autowired
     CertificateRepository certificateRepository;
 
     @Override
-    public X509Certificate generateCertificate(SubjectDTO subjectData, IssuerDTO issuerData, String type) {
+    public X509Certificate generateRootCertificate(CertificateDataDTO certificateData) {
         try {
             JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
             builder = builder.setProvider("BC");
-            ContentSigner contentSigner = builder.build(issuerData.getPrivateKey());
-            X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(issuerData.getX500name(),
-                    new BigInteger(subjectData.getSerialNumber()),
-                    subjectData.getStartDate(),
-                    subjectData.getEndDate(),
-                    subjectData.getX500name(),
-                    subjectData.getPublicKey());
+            PrivateKey issuerPrivateKey = getPrivateKey(certificateData);
+            ContentSigner contentSigner = builder.build(issuerPrivateKey);
+            Date now = new Date();
+            Long time = now.getTime();
+            Double salt = 1000000 * Math.random();
+            String serNumber = time.toString() + salt.toString();
+            X500Name x500Name = new JcaX509CertificateHolder((X509Certificate) getCertificate(certificateData)).getSubject();
+            KeyPair subjectKP = generateKeyPair();
+            //new X500Name(getCertificate(certificateData).getIssuerX500Principal().getName(X500Principal.RFC1779));
+            X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(x500Name,
+                    new BigInteger(serNumber),
+                    certificateData.getStartDate(),
+                    certificateData.getEndDate(),
+                    certificateData.convertToX500Name(),
+                    subjectKP.getPublic());
             X509CertificateHolder certHolder = certGen.build(contentSigner);
             JcaX509CertificateConverter certConverter = new JcaX509CertificateConverter();
             certConverter = certConverter.setProvider("BC");
             X509Certificate certificate = certConverter.getCertificate(certHolder);
-            this.saveCertificate(certificate,type,issuerData);
+            this.saveCertificate(certificate,certificateData.getCertificateType(),subjectKP.getPrivate());
+
             return certificate;
         } catch (CertificateEncodingException e) {
             e.printStackTrace();
@@ -72,7 +89,49 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     }
 
     @Override
-    public Certificate saveCertificateInDB(Certificate certificate) {
+    public X509Certificate generateCertificate(CertificateDataDTO certificateData) {
+        try {
+            JcaContentSignerBuilder builder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
+            builder = builder.setProvider("BC");
+            PrivateKey issuerPrivateKey = getPrivateKey(certificateData);
+            ContentSigner contentSigner = builder.build(issuerPrivateKey);
+            Date now = new Date();
+            Long time = now.getTime();
+            Double salt = 1000000 * Math.random();
+            String serNumber = time.toString() + salt.toString();
+            X500Name x500Name = new JcaX509CertificateHolder((X509Certificate) getCertificate(certificateData)).getSubject();
+            KeyPair subjectKP = generateKeyPair();
+            //new X500Name(getCertificate(certificateData).getIssuerX500Principal().getName(X500Principal.RFC1779));
+            X509v3CertificateBuilder certGen = new JcaX509v3CertificateBuilder(x500Name,
+                    new BigInteger(serNumber),
+                    certificateData.getStartDate(),
+                    certificateData.getEndDate(),
+                    certificateData.convertToX500Name(),
+                    subjectKP.getPublic());
+            X509CertificateHolder certHolder = certGen.build(contentSigner);
+            JcaX509CertificateConverter certConverter = new JcaX509CertificateConverter();
+            certConverter = certConverter.setProvider("BC");
+            X509Certificate certificate = certConverter.getCertificate(certHolder);
+            this.saveCertificate(certificate,certificateData.getCertificateType(),subjectKP.getPrivate());
+
+            return certificate;
+        } catch (CertificateEncodingException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (OperatorCreationException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    @Override
+    public Certificate saveCertificateInDB(X509Certificate x509Certificate) {
         Certificate c = new Certificate();
         c.setCertificateType(CertificateType.root);
         c.setEndDate(new Date());
@@ -88,22 +147,55 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         c.setIssuer(c);
 
         return certificateRepository.save(c);
+
     }
 
     @Override
-    public void saveCertificate(X509Certificate certificate, String type, IssuerDTO issuerData) {
-        if(type.equals("ROOT")){
+    public void saveCertificate(X509Certificate certificate, CertificateType type, PrivateKey privateKey) {
+        if(type == CertificateType.root){
             String password = "Pa33w0rd-123";
             fileWriterService.loadKeyStore("root",password.toCharArray());
-            fileWriterService.write(certificate.getSerialNumber().toString(),issuerData.getPrivateKey(),password.toCharArray(),certificate);
-        }else if (type.equals("INTERMEDIATE")){
+            fileWriterService.write(certificate.getSerialNumber().toString(), privateKey ,password.toCharArray(),certificate);
+        }else if (type == CertificateType.intermediate){
             String password = "31fRaT-654";
             fileWriterService.loadKeyStore("intermediate",password.toCharArray());
-            fileWriterService.write(certificate.getSerialNumber().toString(),issuerData.getPrivateKey(),password.toCharArray(),certificate);
+            fileWriterService.write(certificate.getSerialNumber().toString(),privateKey,password.toCharArray(),certificate);
         }else {
             String password = "528-3waGeeR";
             fileWriterService.loadKeyStore("endEntity",password.toCharArray());
-            fileWriterService.write(certificate.getSerialNumber().toString(),issuerData.getPrivateKey(),password.toCharArray(),certificate);
+            fileWriterService.write(certificate.getSerialNumber().toString(),privateKey,password.toCharArray(),certificate);
+        }
+    }
+
+    private PrivateKey getPrivateKey(CertificateDataDTO certificateData){
+        if(certificateData.getIssuerType() == CertificateType.root){
+            String password = "Pa33w0rd-123";
+            PrivateKey key = fileReaderService.readPrivateKey("root", password, certificateData.getIssuerSerialNumber(), password);
+            return key;
+        }else if (certificateData.getIssuerType()  == CertificateType.intermediate){
+            String password = "31fRaT-654";
+            PrivateKey key = fileReaderService.readPrivateKey("intermediate", password, certificateData.getIssuerSerialNumber(), password);
+            return key;
+        }else {
+            String password = "528-3waGeeR";
+            PrivateKey key = fileReaderService.readPrivateKey("endEntity", password, certificateData.getIssuerSerialNumber(), password);
+            return key;
+        }
+    }
+
+    private X509Certificate getCertificate(CertificateDataDTO certificateData){
+        if(certificateData.getIssuerType() == CertificateType.root){
+            String password = "Pa33w0rd-123";
+            X509Certificate certificate = (X509Certificate) fileReaderService.readCertificate("root", password, certificateData.getIssuerSerialNumber());
+            return certificate;
+        }else if (certificateData.getIssuerType()  == CertificateType.intermediate){
+            String password = "31fRaT-654";
+            X509Certificate certificate = (X509Certificate) fileReaderService.readCertificate("intermediate", password, certificateData.getIssuerSerialNumber());
+            return certificate;
+        }else {
+            String password = "528-3waGeeR";
+            X509Certificate certificate = (X509Certificate)fileReaderService.readCertificate("endEntity", password, certificateData.getIssuerSerialNumber());
+            return certificate;
         }
     }
 

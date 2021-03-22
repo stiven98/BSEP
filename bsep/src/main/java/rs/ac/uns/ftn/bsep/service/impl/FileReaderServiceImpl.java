@@ -1,6 +1,7 @@
 package rs.ac.uns.ftn.bsep.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.bsep.domain.users.IssuerData;
 import rs.ac.uns.ftn.bsep.repository.filerepository.FileReaderRepository;
 import rs.ac.uns.ftn.bsep.service.FileReaderService;
@@ -8,6 +9,7 @@ import rs.ac.uns.ftn.bsep.service.FileReaderService;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 
+@Service
 public class FileReaderServiceImpl implements FileReaderService {
 
     @Autowired

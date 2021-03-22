@@ -20,12 +20,6 @@ public class CertificateController {
     @Autowired
     CertificateGeneratorService certificateGeneratorService;
 
-    @PostMapping("/jebi")
-    public ResponseEntity<?> createCertificate(){
-      //  return new ResponseEntity<>("cao",HttpStatus.OK);
-        return new ResponseEntity<Certificate>(certificateGeneratorService.saveCertificateInDB(new Certificate()),HttpStatus.OK);
-    }
-
     @PostMapping("/proba")
     public List<Certificate> getAllValidIssuers(@RequestBody DateDTO date){
         System.out.println(date.getDate());
