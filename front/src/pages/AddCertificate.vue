@@ -27,6 +27,20 @@
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
+       <q-input
+        filled
+        v-model="certificate.firstName"
+        label="First name"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+      />
+       <q-input
+        filled
+        v-model="certificate.lastName"
+        label="Last name"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+      />
       <div style="width:600px" class="row ">
         <div class="col">
         <q-input
