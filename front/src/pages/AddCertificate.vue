@@ -20,13 +20,26 @@
         style="width:300px"
       />
       </div>
+      <q-btn-toggle
+        v-model="nameSelect"
+        push
+        glossy
+        toggle-color="primary"
+        :options="[
+          {label: 'Common name', value: 'common'},
+          {label: 'First/Last name', value: 'firstlast'},
+        ]"
+      />
       <q-input
         filled
         v-model="certificate.commonName"
         label="Common name"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+        v-if="nameSelect==='common'"
       />
+       <div class="row" style="width:600px"  v-else>
+         <div class="col">
        <q-input
         filled
         v-model="certificate.firstName"
@@ -34,6 +47,8 @@
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
+         </div>
+         <div class="col q-pl-md">
        <q-input
         filled
         v-model="certificate.lastName"
@@ -41,6 +56,8 @@
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
+         </div>
+       </div>
       <div style="width:600px" class="row ">
         <div class="col">
         <q-input
@@ -153,7 +170,8 @@ export default {
       typeOptions: ['root', 'intermediate', 'endEntity'],
       issuerTypeOptions: ['service', 'subsystem', 'user'],
       object: '',
-      issuerDisabled: true
+      issuerDisabled: true,
+      nameSelect: 'common'
     }
   },
   methods: {
