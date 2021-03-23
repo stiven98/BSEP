@@ -22,9 +22,6 @@ public class CertificateController {
     @Autowired
     CertificateGeneratorService certificateGeneratorService;
 
-
-
-
     @PostMapping("/create")
     public ResponseEntity<?>CreateCertificate(@RequestBody CertificateDataDTO cet) {
         if(cet.getCertificateType() == CertificateType.root){
@@ -39,15 +36,14 @@ public class CertificateController {
         else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<Certificate> getAll(){
         return certificateGeneratorService.getAll();
     }
 
     @PostMapping("/validIssuers")
     public List<Certificate> getAllValidIssuers(@RequestBody DateDTO date){
-        System.out.println(date.getDate());
-        return certificateGeneratorService.getAllValidateCertificates(date.getDate());
+        return certificateGeneratorService.getAllValidCertificates(date.getStartDate(), date.getEndDate());
     }
 
 

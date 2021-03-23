@@ -14,7 +14,6 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class CertificateDataDTO {
     private String issuerSerialNumber;
     private CertificateType issuerType;
@@ -28,10 +27,42 @@ public class CertificateDataDTO {
     private String organizationUnit;
     private String country;
     private String email;
+    private String subjectSerialNumber;
+
+
+    public CertificateDataDTO (){
+        super();
+        Date now = new Date();
+        Long time = now.getTime();
+        Double salt = 1000000 * Math.random();
+        Long lsalt = salt.longValue();
+        String serNumber = time.toString() + lsalt.toString();
+        this.subjectSerialNumber = serNumber;
+    }
+
+
+    public CertificateDataDTO(String issuerSerialNumber, CertificateType issuerType, CertificateType certificateType, Date startDate, Date endDate, String commonName, String firstName, String lastName, String organization, String organizationUnit, String country, String email) {
+        this.issuerSerialNumber = issuerSerialNumber;
+        this.issuerType = issuerType;
+        this.certificateType = certificateType;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.commonName = commonName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.organization = organization;
+        this.organizationUnit = organizationUnit;
+        this.country = country;
+        this.email = email;
+        Date now = new Date();
+        Long time = now.getTime();
+        Double salt = 1000000 * Math.random();
+        Long lsalt = salt.longValue();
+        String serNumber = time.toString() + lsalt.toString();
+        this.subjectSerialNumber = serNumber;
+    }
 
     public X500Name convertToX500Name(){
-
-
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
         builder.addRDN(BCStyle.CN, this.commonName);
         builder.addRDN(BCStyle.SURNAME, this.lastName);
@@ -40,6 +71,7 @@ public class CertificateDataDTO {
         builder.addRDN(BCStyle.OU, this.organizationUnit);
         builder.addRDN(BCStyle.C, this.country);
         builder.addRDN(BCStyle.E, this.email);
+        builder.addRDN(BCStyle.UID,  this.subjectSerialNumber);
         return builder.build();
     }
 

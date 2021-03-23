@@ -11,5 +11,6 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public class DateDTO {
-    public Date date;
+    public Date startDate;
+    public Date endDate;
 }
