@@ -180,6 +180,20 @@ export default {
         this.certificate.issuerSerialNumber = this.issuer.value
       }
       this.$axios.post('http://localhost:8085/api/certificate/create', this.certificate)
+        .then(response => {
+          console.log(response)
+          this.$q.notify({
+            type: 'positive',
+            message: 'Certificate succesfully created.'
+          })
+            .catch(err => {
+              console.log(err)
+              this.$q.notify({
+                type: 'negative',
+                message: 'Error.'
+              })
+            })
+        })
     },
     getIssuers () {
       this.$axios
@@ -189,7 +203,10 @@ export default {
         })
         .then((response) => {
           if (response.data.length === 0) {
-            alert('nema')
+            this.$q.notify({
+              type: 'warning',
+              message: 'No avaliable issuers,try another time span.'
+            })
             this.issuerDisabled = true
             return
           }
@@ -199,6 +216,13 @@ export default {
             certificate.label = element.subject
             certificate.value = element.serialNumber
             this.issuers.push(certificate)
+          })
+        })
+        .catch(err => {
+          console.log(err)
+          this.$q.notify({
+            type: 'negative',
+            message: 'Error.'
           })
         })
     }

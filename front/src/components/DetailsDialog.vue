@@ -1,5 +1,5 @@
 <template>
-    <div class="q-gutter-y-md" style="max-width: 600px">
+    <div class="q-gutter-y-md bg-primary" >
       <q-card>
         <q-tabs
           v-model="tab"
@@ -10,10 +10,10 @@
           align="justify"
         >
           <q-tab name="details" label="Details" />
-          <q-tab name="path" label="Certification path" />
+          <q-tab name="path" label="Certificate path" />
         </q-tabs>
 
-        <q-tab-panels v-model="tab" animated class="bg-primary text-white">
+        <q-tab-panels v-model="tab" animated class="bg-primary text-white" style="min-width:300px;min-height:400px ">
           <q-tab-panel name="details" v-if="selectedCard">
               Issued by: {{selectedCard.issuer}}
               <div>
@@ -48,7 +48,12 @@
 
           <q-tab-panel name="path">
             <div class="text-h6">Path</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+           <q-tree
+      :nodes="chain"
+      node-key="label"
+      default-expand-all
+      dark
+    />
           </q-tab-panel>
         </q-tab-panels>
       </q-card>
@@ -59,12 +64,31 @@ export default {
   props: ['selectedCard'],
   data () {
     return {
-      tab: 'details'
+      tab: 'details',
+      chain: []
     }
+  },
+  beforeMount () {
+    this.createChain()
   },
   methods: {
     formatDate (date) {
       return date.split('T')[0]
+    },
+    createChain () {
+      var list = []
+      this.selectedCard.chain.forEach(el => {
+        var obj = {
+          label: el,
+          children: []
+        }
+        list.push(obj)
+      })
+      var reversed = list.reverse()
+      for (var i = 0; i < reversed.length - 1; i++) {
+        reversed[i + 1].children.push(reversed[i])
+      }
+      this.chain.push(reversed[reversed.length - 1])
     }
   }
 }

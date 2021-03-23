@@ -1,6 +1,6 @@
 <template>
     <q-page padding>
-      <q-dialog v-model="detailsDialog">
+      <q-dialog v-model="detailsDialog" style="width:400px;height:1000px">
          <details-dialog :selectedCard="selectedCard"/>
       </q-dialog>
      <div class="q-pa-md row items-start q-gutter-md">
@@ -48,7 +48,17 @@ export default {
       this.$axios
         .post('http://localhost:8085/api/certificate/revoke', serialNumber, { headers: { 'Content-Type': 'text/plain' } })
         .then(response => {
-          alert('uspesno')
+          this.$q.notify({
+            type: 'positive',
+            message: 'Certificate sucessfully revoked.'
+          })
+        })
+        .catch(err => {
+          console.log(err)
+          this.$q.notify({
+            type: 'negative',
+            message: 'Error, revoking failed.'
+          })
         })
     },
     downloadCertificate (serialNumber) {

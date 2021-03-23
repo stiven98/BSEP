@@ -1,51 +1,49 @@
 <template>
-
-    <div style="max-width:400px">
-        <q-form
-      @submit="onSubmit"
-      class="q-gutter-md"
-    >
-
-      <q-select filled v-model="issuer" :options="issuers" label="Issuer"
-       lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"/>
-       <q-select filled v-model="issuer" :options="issuers" label="Subject"
-       lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"/>
-       <q-input filled v-model="org" label="organization"/>
-
-      <div>
-        <q-btn label="Create certificate" type="submit" color="primary"/>
-      </div>
-    </q-form>
-
-  </div>
+<q-page padding>
+      <q-dialog v-model="detailsDialog" style="width:400px;height:1000px">
+         <details-dialog :selectedCard="selectedCard"/>
+      </q-dialog>
+     <div class="q-pa-md row items-start q-gutter-md">
+    <q-card v-for="c in allCertificates" v-bind:key="c.id" class="my-card">
+      <q-card-section class="bg-primary text-white">
+        <div class="text-h6">{{c.subject}}</div>
+        <div class="text-subtitle2">Serial number: {{c.serialNumber}}</div>
+        <div class="text-subtitle2">Valid from: {{formatDate(c.startDate)}} to: {{formatDate(c.endDate)}}  </div>
+        <div class="text-subtitle2">Type: {{c.certificateType}}</div>
+      </q-card-section>
+      <q-separator />
+      <q-card-actions align="right">
+        <q-btn @click="selectedCard=c;detailsDialog=true">Details</q-btn>
+      </q-card-actions>
+    </q-card>
+     </div>
+    </q-page>
 </template>
 
 <script>
+import DetailsDialog from 'src/components/DetailsDialog.vue'
 export default {
   name: 'UserHome',
+  components: { DetailsDialog },
   data: function () {
     return {
-      issuers: [],
-      subjects: [],
-      issuer: null,
-      subject: null,
-      org: ''
+      selectedCard: null,
+      detailsDialog: false,
+      allCertificates: []
     }
   },
   methods: {
-    onSubmit () {
-      if (this.username === 'admin' && this.pass === 'admin') {
-        this.$router.push('/adminHome')
-      }
-    },
-    getIssuers () {
-      // to be implemented
-    },
-    getSubjects () {
-      // to be implemented
+    formatDate (date) {
+      return date.split('T')[0]
     }
+  },
+  beforeMount () {
+    this.$axios
+      .post('http://localhost:8085/api/certificate/getByMail', 'stiven@stiven.com', { headers: { 'Content-Type': 'text/plain' } })
+      .then(response => {
+        this.allCertificates = response.data
+      })
   }
+
 }
 </script>
