@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.CertificateResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.DateDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
@@ -38,8 +39,8 @@ public class CertificateController {
     }
 
     @GetMapping("/all")
-    public List<Certificate> getAll(){
-        return certificateGeneratorService.getAll();
+    public List<CertificateResponseDTO> getAll(){
+        return certificateGeneratorService.getAllWithIssuer();
     }
 
     @PostMapping("/validIssuers")

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.CertificateResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateStatus;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.CertificateRepository;
@@ -75,7 +76,11 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             db.setEmail(certificateData.getEmail());
             db.setCertificateStatus(CertificateStatus.activate);
             db.setCountry(certificateData.getCountry());
-            db.setSubject(certificateData.getFirstName() + " " + certificateData.getLastName());
+            if(certificateData.getCommonName().isEmpty()) {
+                db.setSubject(certificateData.getFirstName() + " " + certificateData.getLastName());
+            }else {
+                db.setSubject(certificateData.getCommonName());
+            }
             db.setStartDate(certificateData.getStartDate());
             db.setEndDate(certificateData.getEndDate());
             db.setOrganizationUnit(certificateData.getOrganizationUnit());
@@ -313,6 +318,11 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     @Override
     public List<Certificate> getAll() {
         return certificateRepository.findAll();
+    }
+
+    @Override
+    public List<CertificateResponseDTO> getAllWithIssuer() {
+        return certificateRepository.getAllWithIssuer();
     }
 
     @Override

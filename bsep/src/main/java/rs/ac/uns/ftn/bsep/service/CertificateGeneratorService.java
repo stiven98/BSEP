@@ -2,6 +2,7 @@ package rs.ac.uns.ftn.bsep.service;
 
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.CertificateResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 
 import java.io.FileNotFoundException;
@@ -19,6 +20,7 @@ public interface CertificateGeneratorService {
     Certificate saveCertificateInDB(Certificate c);
     List<Certificate> getAllValidCertificates(Date startDate, Date endDate);
     List<Certificate> getAll();
+    List<CertificateResponseDTO> getAllWithIssuer();
 
     boolean revokeCertificate(String serialNumber);
 
