@@ -10,10 +10,10 @@ import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.DateDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
-
 import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
 import java.util.List;
+
 
 @RestController
 @RequestMapping(value = "/api/certificate", produces = MediaType.APPLICATION_JSON_VALUE)
