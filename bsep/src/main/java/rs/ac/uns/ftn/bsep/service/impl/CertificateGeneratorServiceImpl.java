@@ -143,7 +143,11 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             db.setEmail(certificateData.getEmail());
             db.setCertificateStatus(CertificateStatus.activate);
             db.setCountry(certificateData.getCountry());
-            db.setSubject(certificateData.getFirstName() + " " + certificateData.getLastName());
+            if(certificateData.getCommonName().isEmpty()) {
+                db.setSubject(certificateData.getFirstName() + " " + certificateData.getLastName());
+            }else {
+                db.setSubject(certificateData.getCommonName());
+            }
             db.setStartDate(certificateData.getStartDate());
             db.setEndDate(certificateData.getEndDate());
             db.setOrganizationUnit(certificateData.getOrganizationUnit());
@@ -322,7 +326,26 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
 
     @Override
     public List<CertificateResponseDTO> getAllWithIssuer() {
-        return certificateRepository.getAllWithIssuer();
+        List<CertificateResponseDTO> ret=new ArrayList<>();
+        for(CertificateResponseDTO dto: certificateRepository.getAllWithIssuer()){
+            for(Certificate c:getChainForCertificate(dto.getSerialNumber())){
+                dto.getChain().add(c.getSubject());
+            }
+            ret.add(dto);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<CertificateResponseDTO> getByEmailWithIssuer(String email) {
+        List<CertificateResponseDTO> ret=new ArrayList<>();
+        for(CertificateResponseDTO dto: certificateRepository.getByEmailWithIssuer(email)){
+            for(Certificate c:getChainForCertificate(dto.getSerialNumber())){
+                dto.getChain().add(c.getSubject());
+            }
+            ret.add(dto);
+        }
+        return ret;
     }
 
     @Override
@@ -365,6 +388,8 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
 
         return true;
     }
+
+
 
     @Override
     public void downloadCertificate(String serialNumber) throws CertificateEncodingException, IOException {
@@ -409,5 +434,23 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             password = "528-3waGeeR";
             certificate = (X509Certificate)fileReaderService.readCertificate("endEntity", password, alias);
             return certificate;
+    }
+
+    private List<Certificate> getChainForCertificate(String serialNumber){
+        Certificate certificate=certificateRepository.findBySerialNumber(serialNumber);
+        List<Certificate> chain = new ArrayList<>();
+        chain.add(certificate);
+        boolean flag = false;
+        chain.add(certificate);
+        Certificate iterator=certificate;
+        while (iterator.getCertificateType() != CertificateType.root) {
+            Certificate parent = this.certificateRepository.findBySerialNumber(iterator.getIssuer());
+            iterator = parent;
+            chain.add(iterator);
         }
+        Collections.reverse(chain);
+        return chain;
+
+    }
+
 }

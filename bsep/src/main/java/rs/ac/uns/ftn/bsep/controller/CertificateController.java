@@ -54,9 +54,15 @@ public class CertificateController {
         return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
     }
 
+    @PostMapping("/getByMail")
+    public ResponseEntity<?> getByMail(@RequestBody String email) {
+        return new ResponseEntity<>(certificateGeneratorService.getByEmailWithIssuer(email), HttpStatus.OK);
+    }
+
     @PostMapping("/download")
     public ResponseEntity<?> downloadCertificate(@RequestBody String serialNumber) throws IOException, CertificateEncodingException {
         this.certificateGeneratorService.downloadCertificate(serialNumber);
         return  new ResponseEntity<>("Surprise", HttpStatus.OK);
     }
+
 }

@@ -22,6 +22,8 @@ public interface CertificateGeneratorService {
     List<Certificate> getAll();
     List<CertificateResponseDTO> getAllWithIssuer();
 
+    List<CertificateResponseDTO> getByEmailWithIssuer(String email);
+
     boolean revokeCertificate(String serialNumber);
 
     void downloadCertificate(String serialNumber) throws CertificateEncodingException, IOException;
