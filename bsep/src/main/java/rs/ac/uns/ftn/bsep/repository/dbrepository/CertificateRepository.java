@@ -10,6 +10,12 @@ import java.util.UUID;
 
 public interface CertificateRepository extends JpaRepository<Certificate, UUID> {
 
-    @Query("select s from Certificate s where s.startDate <= ?1 and s.endDate >= ?2 and s.cErtificateStatus = 0 and s.certificateType <> 1")
+    @Query("select s from Certificate s where s.startDate <= ?1 and s.endDate >= ?2 and s.certificateStatus = 0 and s.certificateType <> 1")
     List<Certificate> getALLValid(Date start, Date end);
+
+    @Query("select c from Certificate  c where c.serialNumber = ?1")
+    Certificate findBySerialNumber(String serialNumber);
+
+    @Query("select c from Certificate  c where c.issuer = ?1")
+    List<Certificate> findByIssuerSerialNumber(String serialNumber);
 }

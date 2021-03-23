@@ -16,4 +16,6 @@ public interface CertificateGeneratorService {
     Certificate saveCertificateInDB(Certificate c);
     List<Certificate> getAllValidCertificates(Date startDate, Date endDate);
     List<Certificate> getAll();
+
+    boolean revokeCertificate(String serialNumber);
 }

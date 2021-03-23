@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class CertificateDataDTO {
     private String issuerSerialNumber;
     private CertificateType issuerType;
@@ -41,7 +40,7 @@ public class CertificateDataDTO {
     }
 
 
-    public CertificateDataDTO(String issuerSerialNumber, CertificateType issuerType, CertificateType certificateType, Date startDate, Date endDate, String commonName, String firstName, String lastName, String organization, String organizationUnit, String country, String email) {
+    public CertificateDataDTO(String issuerSerialNumber, CertificateType issuerType, CertificateType certificateType, Date startDate, Date endDate, String commonName, String firstName, String lastName, String organization, String organizationUnit, String country, String email, String subjectSerialNumber) {
         this.issuerSerialNumber = issuerSerialNumber;
         this.issuerType = issuerType;
         this.certificateType = certificateType;

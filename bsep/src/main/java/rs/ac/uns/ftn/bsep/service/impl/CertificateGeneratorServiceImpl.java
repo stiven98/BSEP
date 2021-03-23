@@ -27,9 +27,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CertificateGeneratorServiceImpl implements CertificateGeneratorService {
@@ -71,7 +69,7 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             db.setSerialNumber(certificateData.getSubjectSerialNumber());
             db.setOrganization(certificateData.getOrganization());
             db.setEmail(certificateData.getEmail());
-            db.setCErtificateStatus(CertificateStatus.activate);
+            db.setCertificateStatus(CertificateStatus.activate);
             db.setCountry(certificateData.getCountry());
             db.setSubject(certificateData.getFirstName() + " " + certificateData.getLastName());
             db.setStartDate(certificateData.getStartDate());
@@ -134,7 +132,7 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             db.setSerialNumber(certificateData.getSubjectSerialNumber());
             db.setOrganization(certificateData.getOrganization());
             db.setEmail(certificateData.getEmail());
-            db.setCErtificateStatus(CertificateStatus.activate);
+            db.setCertificateStatus(CertificateStatus.activate);
             db.setCountry(certificateData.getCountry());
             db.setSubject(certificateData.getFirstName() + " " + certificateData.getLastName());
             db.setStartDate(certificateData.getStartDate());
@@ -242,7 +240,7 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     }
 
     public boolean isValid(Certificate certificate,Date startDate){
-        if(certificate.getEndDate().after(startDate) && certificate.getCErtificateStatus()== CertificateStatus.activate){
+        if(certificate.getEndDate().after(startDate) && certificate.getCertificateStatus()== CertificateStatus.activate){
             return true;
         }
         return false;
@@ -311,6 +309,47 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
     @Override
     public List<Certificate> getAll() {
         return certificateRepository.findAll();
+    }
+
+    @Override
+    public boolean revokeCertificate(String serialNumber) {
+
+        Certificate certificate = this.certificateRepository.findBySerialNumber(serialNumber);
+        if(certificate.getCertificateType() == CertificateType.endEntity) {
+            certificate.setCertificateStatus(CertificateStatus.revoked);
+            this.certificateRepository.save(certificate);
+            return true;
+        }
+        Set<Certificate> revokeList = new HashSet<>();
+        revokeList.add(certificate);
+        List<Certificate> allCertificates = this.certificateRepository.findAll();
+        for (Certificate cert : allCertificates) {
+            ArrayList<Certificate> chain = new ArrayList<>();
+            Certificate iterator = cert;
+            boolean flag = false;
+            chain.add(iterator);
+            while (iterator.getCertificateType() != CertificateType.root) {
+                Certificate parent = this.certificateRepository.findBySerialNumber(iterator.getIssuer());
+                if(parent.getSerialNumber().equals(serialNumber)) {
+                    flag = true;
+                    break;
+                }
+                iterator = parent;
+                chain.add(iterator);
+            }
+            if(flag) {
+               for(Certificate fromChain : chain) {
+                   revokeList.add(fromChain);
+               }
+            }
+            chain = new ArrayList<>();
+        }
+        for(Certificate forRevoke : revokeList) {
+            forRevoke.setCertificateStatus(CertificateStatus.revoked);
+            this.certificateRepository.save(forRevoke);
+        }
+
+        return true;
     }
 
 

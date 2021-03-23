@@ -1,6 +1,5 @@
 package rs.ac.uns.ftn.bsep.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,5 +45,9 @@ public class CertificateController {
         return certificateGeneratorService.getAllValidCertificates(date.getStartDate(), date.getEndDate());
     }
 
+    @PostMapping("/revoke")
+    public void revokeCertificate(@RequestBody String serialNumber) {
+        this.certificateGeneratorService.revokeCertificate(serialNumber);
 
+    }
 }

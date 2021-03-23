@@ -34,7 +34,7 @@ public class Certificate {
     private String subject;
     private String serialNumber;
     private CertificateType certificateType;
-    private CertificateStatus cErtificateStatus;
+    private CertificateStatus certificateStatus;
     private CertificateType issuerType;
     private String commonName;
     private String firstName;
