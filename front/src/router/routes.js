@@ -11,7 +11,14 @@ const routes = [
     path: '/adminHome',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      // { path: '', component: () => import('pages/AddCertificate.vue') }
+      { path: '', component: () => import('pages/AdminHome.vue') }
+    ]
+  },
+  {
+    path: '/userHome',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/UserHome.vue') }
     ]
   },
   {

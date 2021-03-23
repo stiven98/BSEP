@@ -22,7 +22,7 @@
       />
 
       <div>
-        <q-btn label="Submit" type="submit" color="primary"/>
+        <q-btn label="Login" type="submit" color="primary"/>
       </div>
     </q-form>
 
@@ -42,7 +42,13 @@ export default {
     onSubmit () {
       if (this.username === 'admin' && this.pass === 'admin') {
         this.$router.push('/adminHome')
+        return
       }
+      if (this.username === 'user' && this.pass === 'user') {
+        this.$router.push('/userHome')
+        return
+      }
+      alert('Wrong username or password')
     }
   }
 }

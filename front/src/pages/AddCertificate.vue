@@ -1,25 +1,118 @@
 <template>
-
-    <div style="max-width:400px">
-        <q-form
-      @submit="onSubmit"
-      class="q-gutter-md"
-    >
-
-      <q-select filled v-model="issuer" :options="issuers" label="Issuer"
-       lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"/>
-       <q-select filled v-model="issuer" :options="issuers" label="Subject"
-       lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"/>
-       <q-input filled v-model="org" label="organization"/>
-
+<q-page padding>
+  <div class="text-h4 text-primary q-pb-md "> Create new certificate:</div>
+  <div style="max-width: 300px" >
+    <q-form @submit="onSubmit" class="q-gutter-md ">
+       <div class="row" style="width:600px">
+      <q-select
+        filled
+        v-model="certificate.certificateType"
+        :options="typeOptions"
+        label="Certificate type"
+        style="width:300px"
+      />
+      <q-select
+        class="q-pl-md"
+        filled
+        v-model="certificate.issuerType"
+        :options="typeOptions"
+        label="Issuer type"
+        style="width:300px"
+      />
+      </div>
+      <q-input
+        filled
+        v-model="certificate.commonName"
+        label="Common name"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+      />
+      <div style="width:600px" class="row ">
+        <div class="col">
+        <q-input
+          filled
+          v-model="certificate.organization"
+          label="Organization"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+        />
+        </div>
+        <div class="col q-pl-md">
+        <q-input
+          filled
+          v-model="certificate.organizationUnit"
+          label="Organization unit"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+        />
+        </div>
+      </div>
+      <q-input
+        filled
+        v-model="certificate.country"
+        label="Country"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+      />
+      <q-input
+        filled
+        v-model="certificate.email"
+        label="Email"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+      />
+      <div class="row " style="width:600px">
+      <div class="col " style="max-width: 300px">
+        <q-input filled v-model="certificate.startDate" label="Valid from" readonly>
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy
+                ref="qDateProxy"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date v-model="certificate.startDate" mask="YYYY-MM-DD">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+      <div class="col q-pl-md " style="max-width: 300px">
+        <q-input filled v-model="certificate.endDate" label="Valid to" readonly>
+          <template v-slot:append>
+            <q-icon name="event" class="cursor-pointer">
+              <q-popup-proxy
+                ref="qDateProxy"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+                <q-date v-model="certificate.endDate" mask="YYYY-MM-DD">
+                  <div class="row items-center justify-end">
+                    <q-btn v-close-popup label="Close" color="primary" flat />
+                  </div>
+                </q-date>
+              </q-popup-proxy>
+            </q-icon>
+          </template>
+        </q-input>
+      </div>
+      </div>
+      <q-btn
+        label="Find valid issuers"
+        v-on:click="getIssuers"
+        color="primary"
+      />
+      <q-select filled v-model="issuer" v-bind:readonly="issuerDisabled" :options="issuers" label="Issuer" />
       <div>
-        <q-btn label="Create certificate" type="submit" color="primary"/>
+        <q-btn label="Create certificate" type="submit" color="primary" />
       </div>
     </q-form>
-
   </div>
+</q-page>
 </template>
 
 <script>
@@ -28,23 +121,54 @@ export default {
   data: function () {
     return {
       issuers: [],
-      subjects: [],
+      certificate: {
+        commonName: '',
+        firstName: '',
+        lastName: '',
+        issuerSerialNumber: '',
+        startDate: '',
+        endDate: '',
+        organization: '',
+        organizationUnit: '',
+        certificateType: '',
+        country: '',
+        email: '',
+        issuerType: ''
+      },
       issuer: null,
-      subject: null,
-      org: ''
+      typeOptions: ['root', 'intermediate', 'endEntity'],
+      issuerTypeOptions: ['service', 'subsystem', 'user'],
+      object: '',
+      issuerDisabled: true
     }
   },
   methods: {
     onSubmit () {
-      if (this.username === 'admin' && this.pass === 'admin') {
-        this.$router.push('/adminHome')
+      if (this.certificate.certificateType !== 'root') {
+        this.certificate.issuerSerialNumber = this.issuer.value
       }
+      this.$axios.post('http://localhost:8085/api/certificate/create', this.certificate)
     },
     getIssuers () {
-      // to be implemented
-    },
-    getSubjects () {
-      // to be implemented
+      this.$axios
+        .post('http://localhost:8085/api/certificate/validIssuers', {
+          startDate: this.certificate.startDate,
+          endDate: this.certificate.endDate
+        })
+        .then((response) => {
+          if (response.data.length === 0) {
+            alert('nema')
+            this.issuerDisabled = true
+            return
+          }
+          response.data.forEach((element) => {
+            this.issuerDisabled = false
+            var certificate = {}
+            certificate.label = element.subject
+            certificate.value = element.serialNumber
+            this.issuers.push(certificate)
+          })
+        })
     }
   }
 }
