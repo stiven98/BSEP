@@ -21,6 +21,6 @@ public interface CertificateRepository extends JpaRepository<Certificate, UUID> 
     @Query("select c from Certificate  c where c.issuer = ?1")
     List<Certificate> findByIssuerSerialNumber(String serialNumber);
 
-    @Query("SELECT new rs.ac.uns.ftn.bsep.domain.dto.CertificateResponseDTO(c1.subject,c.startDate,c.endDate,c.subject,c.serialNumber,c.certificateType,c.issuerType,c.organization,c.organizationUnit,c.country,c.email) from Certificate c join Certificate c1 on c.issuer=c.serialNumber")
+    @Query("SELECT new rs.ac.uns.ftn.bsep.domain.dto.CertificateResponseDTO(c1.subject,c.startDate,c.endDate,c.subject,c.serialNumber,c.certificateType,c.issuerType,c.organization,c.organizationUnit,c.country,c.email) from Certificate c join Certificate c1 on c.issuer=c1.serialNumber")
     List<CertificateResponseDTO> getAllWithIssuer();
 }
