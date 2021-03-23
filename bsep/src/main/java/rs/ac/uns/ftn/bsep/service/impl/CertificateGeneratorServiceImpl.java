@@ -21,7 +21,9 @@ import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
 import rs.ac.uns.ftn.bsep.service.FileReaderService;
 import rs.ac.uns.ftn.bsep.service.FileWriterService;
 
+import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
@@ -34,6 +36,8 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
 
     @Autowired
     FileWriterService fileWriterService;
+
+    private static final String DOWNLOAD_PATH = System.getProperty("user.home") + "\\Downloads\\";
 
     @Autowired
     FileReaderService fileReaderService;
@@ -350,6 +354,18 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         }
 
         return true;
+    }
+
+    @Override
+    public void downloadCertificate(String serialNumber) throws CertificateEncodingException, IOException {
+        String fileName = DOWNLOAD_PATH + "BSEP" + serialNumber + ".cer";
+        FileOutputStream outputStream = null;
+        X509Certificate certificate = this.readCertificateBlind(serialNumber);
+        File file = new File(fileName);
+        byte[] buf = certificate.getEncoded();
+        FileOutputStream os = new FileOutputStream(file);
+        os.write(buf);
+        os.close();
     }
 
 

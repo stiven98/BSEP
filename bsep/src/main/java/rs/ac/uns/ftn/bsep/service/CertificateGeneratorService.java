@@ -4,7 +4,10 @@ import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.PrivateKey;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.List;
@@ -18,4 +21,6 @@ public interface CertificateGeneratorService {
     List<Certificate> getAll();
 
     boolean revokeCertificate(String serialNumber);
+
+    void downloadCertificate(String serialNumber) throws CertificateEncodingException, IOException;
 }

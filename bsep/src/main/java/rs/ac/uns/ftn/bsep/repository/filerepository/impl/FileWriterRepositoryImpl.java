@@ -7,6 +7,7 @@ import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 
 @Repository
@@ -22,6 +23,16 @@ public class FileWriterRepositoryImpl implements FileWriterRepository {
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         }
+    }
+
+    public Certificate[] readCertificateChain(KeyStore keyStore, String alias, X509Certificate certificate) throws KeyStoreException {
+        Certificate[] certificates = keyStore.getCertificateChain(alias);
+        Certificate[] certificateChain = new Certificate[certificates.length + 1];
+        certificateChain[0] = certificate;
+        for(int i = 0; i < certificates.length; i ++) {
+            certificateChain[i+1] = certificates[i];
+        }
+        return certificateChain;
     }
 
     @Override
