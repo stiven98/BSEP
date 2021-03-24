@@ -15,7 +15,7 @@
           PKI App
         </q-toolbar-title>
 
-        <div>Admin</div>
+        <div>User</div>
       </q-toolbar>
     </q-header>
 
@@ -53,12 +53,7 @@ const linksData = [
   {
     title: 'All certificates',
     icon: 'list',
-    link: '#/adminHome'
-  },
-  {
-    title: 'Create certificate',
-    icon: 'add',
-    link: '#/newCertificate'
+    link: '#/userHome'
   },
   {
     title: 'Logout',
@@ -68,7 +63,7 @@ const linksData = [
 ]
 
 export default {
-  name: 'MainLayout',
+  name: 'User',
   components: { EssentialLink },
   data () {
     return {
