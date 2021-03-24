@@ -40,15 +40,23 @@ export default {
   },
   methods: {
     onSubmit () {
-      if (this.username === 'admin' && this.pass === 'admin') {
-        this.$router.push('/adminHome')
-        return
-      }
-      if (this.username === 'user' && this.pass === 'user') {
-        this.$router.push('/userHome')
-        return
-      }
-      alert('Wrong username or password')
+      this.$axios.post('http://localhost:8085/api/users/login', {
+        username: this.username,
+        password: this.pass
+      })
+        .then(response => {
+          localStorage.setItem('user', response.data.username)
+          localStorage.setItem('role', response.data.role)
+          if (response.data.role === 'user') {
+            this.$router.push('userHome')
+          }
+          if (response.data.role === 'admin') {
+            this.$router.push('adminHome')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   }
 }
