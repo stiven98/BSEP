@@ -13,9 +13,9 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Entity(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-
 public abstract class User {
     @Id
     @GeneratedValue(generator = "uuid2")
