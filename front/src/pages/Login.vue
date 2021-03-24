@@ -1,6 +1,6 @@
 <template>
-
-    <div style="max-width:400px">
+    <div class="q-pa-xl q-mt-xl row justify-center">
+      <div class="col-2" >
         <q-form
       @submit="onSubmit"
       class="q-gutter-md"
@@ -25,8 +25,8 @@
         <q-btn label="Login" type="submit" color="primary"/>
       </div>
     </q-form>
-
-  </div>
+      </div>
+    </div>
 </template>
 
 <script>
