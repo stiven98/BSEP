@@ -11,8 +11,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.bsep.domain.dto.LoginDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.LoginResponseDTO;
+import rs.ac.uns.ftn.bsep.domain.users.Admin;
 import rs.ac.uns.ftn.bsep.domain.users.Authority;
 import rs.ac.uns.ftn.bsep.domain.users.User;
+import rs.ac.uns.ftn.bsep.email.EmailSender;
 import rs.ac.uns.ftn.bsep.security.TokenUtils;
 import rs.ac.uns.ftn.bsep.service.UserService;
 
@@ -29,6 +31,8 @@ public class UserController {
     @Autowired
     private TokenUtils tokenUtils;
 
+    @Autowired
+    private EmailSender emailSender;
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -48,5 +52,15 @@ public class UserController {
         // Vrati token kao odgovor na uspesnu autentifikaciju
         LoginResponseDTO responseDTO= new LoginResponseDTO(user.getUsername(),jwt,authorities);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("/forgotPassword")
+    public HttpStatus forgotPassword() {
+        try{
+            emailSender.sendForgotPasswordEmail(new Admin());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return HttpStatus.OK;
     }
 }
