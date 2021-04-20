@@ -5,6 +5,18 @@
       @submit="onSubmit"
       class="q-gutter-md"
     >
+    <q-dialog v-model="forgotPass" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-input v-model="forgotEmail" label="Enter your email:"/>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Send recovery mail" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
       <q-input
         filled
         v-model="username"
@@ -20,7 +32,7 @@
         lazy-rules
        :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
-
+      <q-btn  v-on:click="forgotPass=true" class="text-primary" flat>Forgot password? </q-btn>
       <div>
         <q-btn label="Login" type="submit" color="primary"/>
       </div>
@@ -35,7 +47,9 @@ export default {
   data: function () {
     return {
       username: '',
-      pass: ''
+      pass: '',
+      forgotPass: false,
+      forgotEmail: ''
     }
   },
   methods: {
@@ -46,11 +60,11 @@ export default {
       })
         .then(response => {
           localStorage.setItem('user', response.data.username)
-          localStorage.setItem('role', response.data.role)
-          if (response.data.role === 'user') {
+          localStorage.setItem('role', response.data.authorityList[0].authority)
+          if (response.data.authorityList[0].authority === 'user') {
             this.$router.push('userHome')
           }
-          if (response.data.role === 'admin') {
+          if (response.data.authorityList[0].authority === 'admin') {
             this.$router.push('adminHome')
           }
         })
