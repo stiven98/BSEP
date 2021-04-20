@@ -1,7 +1,6 @@
 package rs.ac.uns.ftn.bsep.domain.certificate;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +10,9 @@ import rs.ac.uns.ftn.bsep.domain.enums.CertificateStatus;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.domain.enums.EntityType;
 
-import javax.persistence.*;
-import java.security.cert.X509Certificate;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.UUID;
 

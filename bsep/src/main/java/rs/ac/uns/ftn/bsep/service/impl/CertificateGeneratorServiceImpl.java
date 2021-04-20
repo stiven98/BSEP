@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
-import rs.ac.uns.ftn.bsep.domain.dto.CertificateResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateStatus;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.CertificateRepository;
@@ -22,15 +21,16 @@ import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
 import rs.ac.uns.ftn.bsep.service.FileReaderService;
 import rs.ac.uns.ftn.bsep.service.FileWriterService;
 
-import java.io.*;
 import java.math.BigInteger;
-import java.nio.charset.Charset;
 import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class CertificateGeneratorServiceImpl implements CertificateGeneratorService {
@@ -178,31 +178,6 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
 
     }
 
-    @Override
-    public Certificate saveCertificateInDB(Certificate c) {
-        return certificateRepository.save(c);
-    }
-
-    @Override
-    public void saveCertificate(X509Certificate certificate, CertificateType type, PrivateKey privateKey) {
-        if(type == CertificateType.root){
-            String password = "Pa33w0rd-123";
-            fileWriterService.loadKeyStore("root",password.toCharArray());
-            fileWriterService.write(certificate.getSerialNumber().toString(), privateKey ,password.toCharArray(),certificate);
-            fileWriterService.saveKeyStore("root",password.toCharArray());
-        }else if (type == CertificateType.intermediate){
-            String password = "31fRaT-654";
-            fileWriterService.loadKeyStore("intermediate",password.toCharArray());
-            fileWriterService.write(certificate.getSerialNumber().toString(),privateKey,password.toCharArray(),certificate);
-            fileWriterService.saveKeyStore("intermediate",password.toCharArray());
-        }else {
-            String password = "528-3waGeeR";
-            fileWriterService.loadKeyStore("endEntity",password.toCharArray());
-            fileWriterService.write(certificate.getSerialNumber().toString(),privateKey,password.toCharArray(),certificate);
-            fileWriterService.saveKeyStore("endEntity",password.toCharArray());
-        }
-    }
-
     private PrivateKey getPrivateKey(CertificateDataDTO certificateData){
         if(certificateData.getIssuerType() == CertificateType.root){
             String password = "Pa33w0rd-123";
@@ -259,19 +234,6 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         return false;
     }
 
-    @Override
-    public List<Certificate> getAllValidCertificates(Date startDate, Date endDate){
-        List<Certificate> list = new ArrayList<>();
-        for(Certificate c : certificateRepository.getALLValid(startDate,endDate)){
-            X509Certificate issuer = readCertificate(c.getIssuer(),c.getIssuerType());
-            X509Certificate subject = readCertificate(c.getSerialNumber(),c.getCertificateType());
-            if(checkSignature(issuer, subject)){
-                list.add(c);
-            }
-        }
-        return list;
-    }
-
     private boolean checkSignature(X509Certificate issuer, X509Certificate subject){
         if(issuer.getSerialNumber() == subject.getSerialNumber()){
             try {
@@ -318,91 +280,6 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
             }
         }
     }
-
-    @Override
-    public List<Certificate> getAll() {
-        return certificateRepository.findAll();
-    }
-
-    @Override
-    public List<CertificateResponseDTO> getAllWithIssuer() {
-        List<CertificateResponseDTO> ret=new ArrayList<>();
-        for(CertificateResponseDTO dto: certificateRepository.getAllWithIssuer()){
-            for(Certificate c:getChainForCertificate(dto.getSerialNumber())){
-                dto.getChain().add(c.getSubject());
-            }
-            ret.add(dto);
-        }
-        return ret;
-    }
-
-    @Override
-    public List<CertificateResponseDTO> getByEmailWithIssuer(String email) {
-        List<CertificateResponseDTO> ret=new ArrayList<>();
-        for(CertificateResponseDTO dto: certificateRepository.getByEmailWithIssuer(email)){
-            for(Certificate c:getChainForCertificate(dto.getSerialNumber())){
-                dto.getChain().add(c.getSubject());
-            }
-            ret.add(dto);
-        }
-        return ret;
-    }
-
-    @Override
-    public boolean revokeCertificate(String serialNumber) {
-
-        Certificate certificate = this.certificateRepository.findBySerialNumber(serialNumber);
-        if(certificate.getCertificateType() == CertificateType.endEntity) {
-            certificate.setCertificateStatus(CertificateStatus.revoked);
-            this.certificateRepository.save(certificate);
-            return true;
-        }
-        Set<Certificate> revokeList = new HashSet<>();
-        revokeList.add(certificate);
-        List<Certificate> allCertificates = this.certificateRepository.findAll();
-        for (Certificate cert : allCertificates) {
-            ArrayList<Certificate> chain = new ArrayList<>();
-            Certificate iterator = cert;
-            boolean flag = false;
-            chain.add(iterator);
-            while (iterator.getCertificateType() != CertificateType.root) {
-                Certificate parent = this.certificateRepository.findBySerialNumber(iterator.getIssuer());
-                if(parent.getSerialNumber().equals(serialNumber)) {
-                    flag = true;
-                    break;
-                }
-                iterator = parent;
-                chain.add(iterator);
-            }
-            if(flag) {
-               for(Certificate fromChain : chain) {
-                   revokeList.add(fromChain);
-               }
-            }
-            chain = new ArrayList<>();
-        }
-        for(Certificate forRevoke : revokeList) {
-            forRevoke.setCertificateStatus(CertificateStatus.revoked);
-            this.certificateRepository.save(forRevoke);
-        }
-
-        return true;
-    }
-
-
-
-    @Override
-    public void downloadCertificate(String serialNumber) throws CertificateEncodingException, IOException {
-        String fileName = DOWNLOAD_PATH + "BSEP" + serialNumber + ".cer";
-        FileOutputStream outputStream = null;
-        X509Certificate certificate = this.readCertificateBlind(serialNumber);
-        File file = new File(fileName);
-        byte[] buf = certificate.getEncoded();
-        FileOutputStream os = new FileOutputStream(file);
-        os.write(buf);
-        os.close();
-    }
-
 
     private X509Certificate readCertificate(String alias, CertificateType type){
         if(type == CertificateType.root){
@@ -451,6 +328,31 @@ public class CertificateGeneratorServiceImpl implements CertificateGeneratorServ
         Collections.reverse(chain);
         return chain;
 
+    }
+
+    @Override
+    public Certificate saveCertificateInDB(Certificate c) {
+        return certificateRepository.save(c);
+    }
+
+    @Override
+    public void saveCertificate(X509Certificate certificate, CertificateType type, PrivateKey privateKey) {
+        if(type == CertificateType.root){
+            String password = "Pa33w0rd-123";
+            fileWriterService.loadKeyStore("root",password.toCharArray());
+            fileWriterService.write(certificate.getSerialNumber().toString(), privateKey ,password.toCharArray(),certificate);
+            fileWriterService.saveKeyStore("root",password.toCharArray());
+        }else if (type == CertificateType.intermediate){
+            String password = "31fRaT-654";
+            fileWriterService.loadKeyStore("intermediate",password.toCharArray());
+            fileWriterService.write(certificate.getSerialNumber().toString(),privateKey,password.toCharArray(),certificate);
+            fileWriterService.saveKeyStore("intermediate",password.toCharArray());
+        }else {
+            String password = "528-3waGeeR";
+            fileWriterService.loadKeyStore("endEntity",password.toCharArray());
+            fileWriterService.write(certificate.getSerialNumber().toString(),privateKey,password.toCharArray(),certificate);
+            fileWriterService.saveKeyStore("endEntity",password.toCharArray());
+        }
     }
 
 }

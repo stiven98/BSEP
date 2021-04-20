@@ -1,12 +1,9 @@
 package rs.ac.uns.ftn.bsep.domain.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import rs.ac.uns.ftn.bsep.domain.enums.CertificateStatus;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
-import rs.ac.uns.ftn.bsep.domain.enums.EntityType;
 
 import java.util.ArrayList;
 import java.util.Date;
