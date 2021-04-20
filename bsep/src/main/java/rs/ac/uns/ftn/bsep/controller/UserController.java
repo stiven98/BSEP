@@ -32,8 +32,6 @@ public class UserController {
     private TokenUtils tokenUtils;
 
     @Autowired
-    private EmailSender emailSender;
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
@@ -55,12 +53,8 @@ public class UserController {
     }
 
     @PostMapping("/forgotPassword")
-    public HttpStatus forgotPassword() {
-        try{
-            emailSender.sendForgotPasswordEmail(new Admin());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public HttpStatus forgotPassword(@RequestBody String email) {
+            userService.resetPassword(email);
         return HttpStatus.OK;
     }
 }
