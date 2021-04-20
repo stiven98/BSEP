@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.CertificateResponseDTO;
 
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;

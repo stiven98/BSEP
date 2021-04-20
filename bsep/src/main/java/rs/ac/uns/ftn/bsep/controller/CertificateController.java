@@ -11,6 +11,8 @@ import rs.ac.uns.ftn.bsep.domain.dto.CertificateResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.DateDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
+import rs.ac.uns.ftn.bsep.service.CertificateService;
+
 import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
 import java.util.List;
@@ -23,6 +25,9 @@ public class CertificateController {
 
     @Autowired
     CertificateGeneratorService certificateGeneratorService;
+
+    @Autowired
+    CertificateService certificateService;
 
     @PostMapping("/create")
     public ResponseEntity<?>CreateCertificate(@RequestBody CertificateDataDTO cet) {
@@ -40,28 +45,28 @@ public class CertificateController {
 
     @GetMapping("/all")
     public List<CertificateResponseDTO> getAll(){
-        return certificateGeneratorService.getAllWithIssuer();
+        return certificateService.getAllWithIssuer();
     }
 
     @PostMapping("/validIssuers")
     public List<Certificate> getAllValidIssuers(@RequestBody DateDTO date){
-        return certificateGeneratorService.getAllValidCertificates(date.getStartDate(), date.getEndDate());
+        return certificateService.getAllValidCertificates(date.getStartDate(), date.getEndDate());
     }
 
     @PostMapping("/revoke")
     public ResponseEntity<?> revokeCertificate(@RequestBody String serialNumber) {
-        this.certificateGeneratorService.revokeCertificate(serialNumber);
+        this.certificateService.revokeCertificate(serialNumber);
         return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
     }
 
     @PostMapping("/getByMail")
     public ResponseEntity<?> getByMail(@RequestBody String email) {
-        return new ResponseEntity<>(certificateGeneratorService.getByEmailWithIssuer(email), HttpStatus.OK);
+        return new ResponseEntity<>(certificateService.getByEmailWithIssuer(email), HttpStatus.OK);
     }
 
     @PostMapping("/download")
     public ResponseEntity<?> downloadCertificate(@RequestBody String serialNumber) throws IOException, CertificateEncodingException {
-        this.certificateGeneratorService.downloadCertificate(serialNumber);
+        this.certificateService.downloadCertificate(serialNumber);
         return  new ResponseEntity<>("Surprise", HttpStatus.OK);
     }
 
