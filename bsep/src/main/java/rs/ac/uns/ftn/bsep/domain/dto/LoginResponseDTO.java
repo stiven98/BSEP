@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import rs.ac.uns.ftn.bsep.domain.enums.Role;
 import rs.ac.uns.ftn.bsep.domain.users.Authority;
 
 import java.util.List;
