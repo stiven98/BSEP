@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.bsep.domain.dto.LoginDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.LoginResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.users.Authority;
 import rs.ac.uns.ftn.bsep.domain.users.User;
 import rs.ac.uns.ftn.bsep.security.TokenUtils;
@@ -32,7 +33,7 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<User> createAuthenticationToken(@RequestBody LoginDTO dto, HttpServletResponse response) {
+    public ResponseEntity<LoginResponseDTO> createAuthenticationToken(@RequestBody LoginDTO dto, HttpServletResponse response) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(),
                         dto.getPassword()));
@@ -45,6 +46,7 @@ public class UserController {
         List<Authority> authorities = new ArrayList<>();
         user.getAuthorities().stream().forEach(a -> authorities.add((Authority) a));
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        LoginResponseDTO responseDTO= new LoginResponseDTO(user.getUsername(),jwt,authorities);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 }
