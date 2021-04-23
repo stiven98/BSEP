@@ -20,7 +20,7 @@
       <q-input
         filled
         v-model="username"
-        label="Your username *"
+        label="Your email "
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
@@ -30,6 +30,7 @@
         v-model="pass"
         label="Your password"
         lazy-rules
+        type="password"
        :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
       <q-btn  v-on:click="forgotPass=true" class="text-primary" flat>Forgot password? </q-btn>
@@ -54,7 +55,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$axios.post('http://localhost:8085/api/users/login', {
+      this.$axios.post('https://localhost:8085/api/users/login', {
         username: this.username,
         password: this.pass
       })
@@ -73,7 +74,7 @@ export default {
         })
     },
     sendRequest () {
-      this.$axios.post('http://localhost:8085/api/users/forgotPassword', this.forgotEmail, { headers: { 'Content-Type': 'text/plain' } })
+      this.$axios.post('https://localhost:8085/api/users/forgotPassword', this.forgotEmail, { headers: { 'Content-Type': 'text/plain' } })
         .then(res => {
           alert(res.data)
         })

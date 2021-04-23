@@ -1,20 +1,30 @@
 package rs.ac.uns.ftn.bsep.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.bsep.domain.ResetPasswordRequest;
 import rs.ac.uns.ftn.bsep.domain.dto.LoginDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.LoginResponseDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.RegisterUserDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.ResetPasswordDTO;
+import rs.ac.uns.ftn.bsep.domain.users.Authority;
+import rs.ac.uns.ftn.bsep.domain.users.EndEntity;
 import rs.ac.uns.ftn.bsep.domain.users.User;
 import rs.ac.uns.ftn.bsep.email.EmailSender;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.ResetPasswordRequestRepository;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.UserRepository;
+import rs.ac.uns.ftn.bsep.security.TokenUtils;
 import rs.ac.uns.ftn.bsep.service.UserService;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,19 +35,37 @@ public class UserServiceImpl implements UserService {
     private ResetPasswordRequestRepository passwordRequestRepository;
     @Autowired
     private EmailSender emailSender;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenUtils tokenUtils;
 
     @Override
-    public User login(LoginDTO dto){
-        for(User u: userRepository.findAll()){
-            if(u.getUsername().equals(dto.getUsername()) && u.getPassword().equals(dto.getPassword())){
-                return u;
-            }
-        }
-        return null;
+    public LoginResponseDTO login(LoginDTO dto){
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(),
+                        dto.getPassword()));
+        // Ubaci korisnika u trenutni security kontekst
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // Kreiraj token za tog korisnika
+        User user = (User) authentication.getPrincipal();
+        String jwt = tokenUtils.generateToken(user.getUsername());
+        int expiresIn = tokenUtils.getExpiredIn();
+        List<Authority> authorities = new ArrayList<>();
+        user.getAuthorities().stream().forEach(a -> authorities.add((Authority) a));
+        // Vrati token kao odgovor na uspesnu autentifikaciju
+        LoginResponseDTO responseDTO= new LoginResponseDTO(user.getUsername(),jwt,authorities);
+        return responseDTO;
     }
 
     @Override
-    public boolean resetPassword(String email) {
+    public boolean sendResetPasswordRequest(String email) {
+        User user= userRepository.findUserByEmail(email);
+        if(user==null){
+            return false;
+        }
         ResetPasswordRequest request=new ResetPasswordRequest();
         request.setEmail(email);
         request.setId(UUID.randomUUID());
@@ -50,10 +78,57 @@ public class UserServiceImpl implements UserService {
         passwordRequestRepository.save(request);
         try {
             emailSender.sendForgotPasswordEmail(request.getId().toString(),email);
-        }catch(Exception e){
+        } catch(Exception e) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean resetPassword(ResetPasswordDTO dto) {
+        if(!dto.getPassword().equals(dto.getPassword2())){
+            return false;
+        }
+        ResetPasswordRequest request=checkRequest(dto.getRequestId());
+        if(request!=null){
+            User user= userRepository.findUserByEmail(request.getEmail());
+            if(user!=null){
+                user.setPassword(passwordEncoder.encode(dto.getPassword()));
+                userRepository.save(user);
+                request.setUsed(true);
+                passwordRequestRepository.save(request);
+                try {
+                    emailSender.sendResetPasswordEmail(request.getEmail());
+                }catch (Exception e){
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public ResetPasswordRequest checkRequest(UUID id) {
+        ResetPasswordRequest request= passwordRequestRepository.findById(id).orElse(null);
+        if(request!=null){
+            if(!request.isUsed() && !request.getValidTo().before(new Date())) {
+                return  request;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public User register(RegisterUserDTO dto) {
+        if(!dto.getPass().equals(dto.getPass2())){
+            return null;
+        }
+        EndEntity endEntity=new EndEntity();
+        endEntity.setPassword(passwordEncoder.encode(dto.getPass()));
+        endEntity.setUsername(dto.getEmail());
+        endEntity.setCommonName(dto.getCommonName());
+        return userRepository.save(endEntity);
     }
 
     @Override

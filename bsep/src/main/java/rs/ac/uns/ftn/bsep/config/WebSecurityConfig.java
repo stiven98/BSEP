@@ -1,6 +1,12 @@
 package rs.ac.uns.ftn.bsep.config;
 
+import org.apache.catalina.Context;
+import org.apache.catalina.connector.Connector;
+import org.apache.tomcat.util.descriptor.web.SecurityCollection;
+import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -39,6 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
@@ -54,7 +62,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // komunikacija izmedju klijenta i servera je stateless posto je u pitanju REST aplikacija
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
                 // sve neautentifikovane zahteve obradi uniformno i posalji 401 gresku
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
@@ -63,10 +70,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/users/login").permitAll()
                 .antMatchers("/api/users/forgotPassword").permitAll()
+                .antMatchers("/api/users/resetPassword").permitAll()
+                .antMatchers("/api/users/checkRequest/**").permitAll()
+                .antMatchers("/api/users/register").permitAll()
                 .antMatchers("/api/certificate/**").permitAll()
 
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
+
                 // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
                 .cors().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, userService),

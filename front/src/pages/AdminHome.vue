@@ -35,7 +35,7 @@ export default {
   },
   mounted () {
     this.$axios
-      .get('http://localhost:8085/api/certificate/all')
+      .get('https://localhost:8085/api/certificate/all')
       .then((response) => {
         this.allCertificates = response.data
       })
@@ -47,7 +47,7 @@ export default {
     },
     revokeCertificate (serialNumber) {
       this.$axios
-        .post('http://localhost:8085/api/certificate/revoke', serialNumber, { headers: { 'Content-Type': 'text/plain' } })
+        .post('https://localhost:8085/api/certificate/revoke', serialNumber, { headers: { 'Content-Type': 'text/plain' } })
         .then(response => {
           this.$q.notify({
             type: 'positive',
@@ -64,7 +64,7 @@ export default {
     },
     downloadCertificate (serialNumber) {
       var fileLink = document.createElement('a')
-      fileLink.href = 'http://localhost:8085/api/certificate/download?serialNumber=' + serialNumber
+      fileLink.href = 'https://localhost:8085/api/certificate/download?serialNumber=' + serialNumber
       document.body.appendChild(fileLink)
       fileLink.click()
     }
