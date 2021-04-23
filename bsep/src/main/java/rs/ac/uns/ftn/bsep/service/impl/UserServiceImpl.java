@@ -1,11 +1,16 @@
 package rs.ac.uns.ftn.bsep.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import rs.ac.uns.ftn.bsep.domain.ResetPasswordRequest;
 import rs.ac.uns.ftn.bsep.domain.dto.LoginDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.RegisterUserDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.ResetPasswordDTO;
+import rs.ac.uns.ftn.bsep.domain.users.EndEntity;
 import rs.ac.uns.ftn.bsep.domain.users.User;
 import rs.ac.uns.ftn.bsep.email.EmailSender;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.ResetPasswordRequestRepository;
@@ -25,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private ResetPasswordRequestRepository passwordRequestRepository;
     @Autowired
     private EmailSender emailSender;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public User login(LoginDTO dto){
@@ -37,7 +44,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean resetPassword(String email) {
+    public boolean sendResetPasswordRequest(String email) {
+        User user= userRepository.findUserByEmail(email);
+        if(user==null){
+            return false;
+        }
         ResetPasswordRequest request=new ResetPasswordRequest();
         request.setEmail(email);
         request.setId(UUID.randomUUID());
@@ -54,6 +65,53 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean resetPassword(ResetPasswordDTO dto) {
+        if(!dto.getPassword().equals(dto.getPassword2())){
+            return false;
+        }
+        ResetPasswordRequest request=checkRequest(dto.getRequestId());
+        if(request!=null){
+            User user= userRepository.findUserByEmail(request.getEmail());
+            if(user!=null){
+                user.setPassword(passwordEncoder.encode(dto.getPassword()));
+                userRepository.save(user);
+                request.setUsed(true);
+                passwordRequestRepository.save(request);
+                try {
+                    emailSender.sendResetPasswordEmail(request.getEmail());
+                }catch (Exception e){
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public ResetPasswordRequest checkRequest(UUID id) {
+        ResetPasswordRequest request= passwordRequestRepository.findById(id).orElse(null);
+        if(request!=null){
+            if(!request.isUsed() && !request.getValidTo().before(new Date())) {
+                return  request;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public User register(RegisterUserDTO dto) {
+        if(!dto.getPass().equals(dto.getPass2())){
+            return null;
+        }
+        EndEntity endEntity=new EndEntity();
+        endEntity.setPassword(passwordEncoder.encode(dto.getPass()));
+        endEntity.setUsername(dto.getEmail());
+        endEntity.setCommonName(dto.getCommonName());
+        return userRepository.save(endEntity);
     }
 
     @Override

@@ -29,6 +29,7 @@ public abstract class User implements UserDetails {
     private UUID id;
     private String username;
     private String password;
+    private String commonName;
     @Column(name = "active", nullable = false)
     private boolean active;
 
