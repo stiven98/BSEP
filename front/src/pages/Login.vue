@@ -20,7 +20,7 @@
       <q-input
         filled
         v-model="username"
-        label="Your username *"
+        label="Your email "
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
@@ -30,6 +30,7 @@
         v-model="pass"
         label="Your password"
         lazy-rules
+        type="password"
        :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
       <q-btn  v-on:click="forgotPass=true" class="text-primary" flat>Forgot password? </q-btn>

@@ -5,31 +5,43 @@
       @submit="onSubmit"
       class="q-gutter-md"
     >
-        <q-input
-        filled
-        v-model="pass"
-        label="Enter email"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+    <q-btn-toggle
+        v-model="nameSelect"
+        push
+        glossy
+        toggle-color="primary"
+        :options="[
+          {label: 'Intermediate', value: 'intermediate'},
+          {label: 'End entity', value: 'endEntity'},
+        ]"
       />
+      <div v-if="nameSelect ==='endEntity'">
        <q-input
         filled
-        v-model="pass"
+        v-model="firstname"
         label="First name"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
        <q-input
         filled
-        v-model="pass"
+        v-model="lastname"
         label="Last name"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
-          <q-input
+      </div>
+       <q-input v-else
         filled
-        v-model="pass"
-        label="Enter password"
+        v-model="commonName"
+        label="Common name"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 || 'Please type something']"
+      />
+         <q-input
+        filled
+        v-model="email"
+        label="Enter email"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
@@ -40,23 +52,15 @@
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
-      <q-input
-        filled
-        v-model="pass"
-        label="Enter password"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
-      />
-
-      <q-input
+          <q-input
         filled
         v-model="pass2"
         label="Confirm password"
         lazy-rules
-       :rules="[ val => val && val.length > 0 && val== pass || 'Please make sure your passwords match ']"
+        :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
       <div>
-        <q-btn label="Reset" type="submit" color="primary"/>
+        <q-btn label="Register" type="submit" color="primary"/>
       </div>
     </q-form>
       </div>
@@ -72,7 +76,9 @@ export default {
       pass2: '',
       email: '',
       firstname: '',
-      password: ''
+      lastname: '',
+      commonName: '',
+      nameSelect: 'endEntity'
     }
   },
   methods: {
