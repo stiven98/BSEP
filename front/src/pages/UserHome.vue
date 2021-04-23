@@ -39,7 +39,7 @@ export default {
   },
   beforeMount () {
     this.$axios
-      .post('http://localhost:8085/api/certificate/getByMail', 'stiven@stiven.com', { headers: { 'Content-Type': 'text/plain' } })
+      .post('https://localhost:8085/api/certificate/getByMail', 'stiven@stiven.com', { headers: { 'Content-Type': 'text/plain' } })
       .then(response => {
         this.allCertificates = response.data
       })

@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$axios.post('http://localhost:8085/api/users/login', {
+      this.$axios.post('https://localhost:8085/api/users/login', {
         username: this.username,
         password: this.pass
       })
@@ -74,7 +74,7 @@ export default {
         })
     },
     sendRequest () {
-      this.$axios.post('http://localhost:8085/api/users/forgotPassword', this.forgotEmail, { headers: { 'Content-Type': 'text/plain' } })
+      this.$axios.post('https://localhost:8085/api/users/forgotPassword', this.forgotEmail, { headers: { 'Content-Type': 'text/plain' } })
         .then(res => {
           alert(res.data)
         })

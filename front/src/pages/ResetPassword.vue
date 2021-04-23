@@ -43,7 +43,7 @@ export default {
     }
   },
   beforeMount () {
-    this.$axios.get('http://localhost:8085/api/users/checkRequest/' + this.id)
+    this.$axios.get('https://localhost:8085/api/users/checkRequest/' + this.id)
       .catch(err => {
         console.log(err)
         this.invalid = true
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$axios.post('http://localhost:8085/api/users/resetPassword', {
+      this.$axios.post('https://localhost:8085/api/users/resetPassword', {
         password: this.pass,
         password2: this.pass2,
         requestId: this.id
