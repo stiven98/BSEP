@@ -179,7 +179,7 @@ export default {
       if (this.certificate.certificateType !== 'root') {
         this.certificate.issuerSerialNumber = this.issuer.value
       }
-      this.$axios.post('http://localhost:8085/api/certificate/create', this.certificate)
+      this.$axios.post('https://localhost:8085/api/certificate/create', this.certificate)
         .then(response => {
           console.log(response)
           this.$q.notify({
@@ -197,7 +197,7 @@ export default {
     },
     getIssuers () {
       this.$axios
-        .post('http://localhost:8085/api/certificate/validIssuers', {
+        .post('https://localhost:8085/api/certificate/validIssuers', {
           startDate: this.certificate.startDate,
           endDate: this.certificate.endDate
         })
