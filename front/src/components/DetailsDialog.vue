@@ -73,7 +73,8 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return date.split('T')[0]
+      const dateTmp = date.toString()
+      return dateTmp.split('T')[0]
     },
     createChain () {
       var list = []
