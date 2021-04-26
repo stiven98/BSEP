@@ -78,8 +78,18 @@ public class UserController {
         return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
 
+    @PostMapping("/activate/{id}")
+    public ResponseEntity<?> activateAccount(@PathVariable("id")String id){
+        if(userService.activateAccount(UUID.fromString(id))){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
+    }
+
     @PostMapping("/register")
     public User register(@RequestBody RegisterUserDTO dto){
         return userService.register(dto);
     }
+
+
 }

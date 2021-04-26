@@ -27,11 +27,14 @@ public abstract class User implements UserDetails {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "user_id", nullable = false, unique = true)
     private UUID id;
+    @Column(unique = true)
     private String username;
     private String password;
     private String commonName;
     @Column(name = "active", nullable = false)
     private boolean active;
+
+    private UUID activationId;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",

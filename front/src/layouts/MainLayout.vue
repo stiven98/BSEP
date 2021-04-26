@@ -61,6 +61,11 @@ const linksData = [
     link: '#/newCertificate'
   },
   {
+    title: 'Add user',
+    icon: 'person_add',
+    link: '#/adminRegister'
+  },
+  {
     title: 'Logout',
     icon: 'logout',
     link: '#/'

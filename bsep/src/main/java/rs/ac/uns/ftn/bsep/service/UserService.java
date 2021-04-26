@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService {
     boolean resetPassword(ResetPasswordDTO dto);
     ResetPasswordRequest checkRequest(UUID id);
     User register(RegisterUserDTO dto);
+    boolean activateAccount(UUID id);
 }

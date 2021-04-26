@@ -34,6 +34,10 @@
        :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
       <q-btn  v-on:click="forgotPass=true" class="text-primary" flat>Forgot password? </q-btn>
+      <div class="row items-center">
+        <div> Don't have account? </div>
+        <q-btn  v-on:click="$router.push('register')" class="text-primary" flat>Register</q-btn>
+      </div>
       <div>
         <q-btn label="Login" type="submit" color="primary"/>
       </div>
