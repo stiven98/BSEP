@@ -15,7 +15,7 @@ export default {
     }
   },
   beforeMount () {
-    this.$axios.post('http://localhost:8085/api/users/activate/' + this.id)
+    this.$axios.post('https://localhost:8085/api/users/activate/' + this.id)
       .catch(err => {
         console.log(err)
         this.invalid = true
