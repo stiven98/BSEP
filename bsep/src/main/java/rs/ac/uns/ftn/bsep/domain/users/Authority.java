@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.UUID;
 
 @Getter
@@ -50,4 +51,12 @@ public class Authority implements GrantedAuthority {
     public void setId(UUID id) {
         this.id = id;
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "PRIVILEGES",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "privilege_id"))
+    private Collection<Privilege> privileges;
+
 }
