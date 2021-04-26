@@ -65,11 +65,12 @@ export default {
       })
         .then(response => {
           localStorage.setItem('user', response.data.username)
-          localStorage.setItem('role', response.data.authorityList[0].authority)
-          if (response.data.authorityList[0].authority === 'user') {
+          localStorage.setItem('token', response.data.token)
+          localStorage.setItem('role', response.data.authorityList[1])
+          if (response.data.authorityList.includes('ROLE_USER')) {
             this.$router.push('userHome')
           }
-          if (response.data.authorityList[0].authority === 'admin') {
+          if (response.data.authorityList.includes('ROLE_ADMIN')) {
             this.$router.push('adminHome')
           }
         })

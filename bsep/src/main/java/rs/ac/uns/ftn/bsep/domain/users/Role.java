@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -15,8 +14,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "AUTHORITY")
-public class Authority implements GrantedAuthority {
+@Table(name = "ROLES")
+public class Role {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -28,11 +27,6 @@ public class Authority implements GrantedAuthority {
 
     @Column(name="role")
     private String role;
-
-    @Override
-    public String getAuthority() {
-        return this.role;
-    }
 
     public void setRole(String role) {
         this.role = role;
@@ -52,7 +46,7 @@ public class Authority implements GrantedAuthority {
         this.id = id;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "PRIVILEGES",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),

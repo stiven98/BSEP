@@ -26,7 +26,7 @@ const routes = [
       { path: '', component: () => import('pages/AdminHome.vue') }
     ],
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('role') !== 'admin') next({ name: '/' })
+      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next({ name: '/' })
       else next()
     }
   },
@@ -37,7 +37,7 @@ const routes = [
       { path: '', component: () => import('pages/AdminRegister.vue') }
     ],
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('role') !== 'admin') next({ name: '/' })
+      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next({ name: '/' })
       else next()
     }
   },
@@ -48,7 +48,7 @@ const routes = [
       { path: '', component: () => import('pages/UserHome.vue') }
     ],
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('role') !== 'user') next({ name: '/' })
+      if (localStorage.getItem('role') !== 'ROLE_USER') next({ name: '/' })
       else next()
     }
   },
@@ -59,7 +59,7 @@ const routes = [
       { path: '', component: () => import('pages/AddCertificate.vue') }
     ],
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('role') !== 'admin') next({ name: '/' })
+      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next({ name: '/' })
       else next()
     }
   },
