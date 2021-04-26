@@ -12,7 +12,7 @@
         label="Enter password"
         type="password"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        :rules="[ val => val && val.length > 0 || 'Please type something',passwordValidLength,passwordValidNumber,passwordValidUpper,passwordValidSpecial]"
       />
 
       <q-input
@@ -63,6 +63,19 @@ export default {
           })
           this.$router.push('/')
         })
+    },
+    passwordValidNumber (val) {
+      return /\d/.test(val) || 'Must contain number'
+    },
+    passwordValidUpper (val) {
+      return /[A-Z]/.test(val) || 'Must contain uppercase'
+    },
+    passwordValidSpecial (val) {
+      const format = /[ !@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/
+      return format.test(val) || 'Must contain special character '
+    },
+    passwordValidLength (val) {
+      return val.length > 8 || 'Must contain 8 characters '
     }
   }
 }
