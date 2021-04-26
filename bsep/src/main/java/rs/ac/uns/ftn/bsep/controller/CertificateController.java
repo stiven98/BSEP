@@ -1,10 +1,8 @@
 package rs.ac.uns.ftn.bsep.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
@@ -16,6 +14,7 @@ import rs.ac.uns.ftn.bsep.service.CertificateService;
 
 import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
 import java.util.List;
 
 @RestController
@@ -63,10 +62,23 @@ public class CertificateController {
         return new ResponseEntity<>(certificateService.getByEmailWithIssuer(email), HttpStatus.OK);
     }
 
-    @PostMapping("/download")
-    public ResponseEntity<?> downloadCertificate(@RequestBody String serialNumber) throws IOException, CertificateEncodingException {
-        this.certificateService.downloadCertificate(serialNumber);
-        return  new ResponseEntity<>("Surprise", HttpStatus.OK);
+    @GetMapping("/download")
+    public ResponseEntity<?> downloadCertificate(@RequestParam String serialNumber) throws IOException, CertificateEncodingException {
+        X509Certificate certificate = this.certificateService.getCertificateBySerialNumber(serialNumber);
+        String filename = "BSEP" + serialNumber + ".cer";
+        byte[] buf = certificate.getEncoded();
+        ByteArrayResource resource = new ByteArrayResource(buf);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentDisposition(
+                ContentDisposition.builder("attachment")
+                        .filename(filename).build());
+
+        return ResponseEntity.ok()
+                .contentLength(buf.length)
+                .headers(httpHeaders)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 
 }

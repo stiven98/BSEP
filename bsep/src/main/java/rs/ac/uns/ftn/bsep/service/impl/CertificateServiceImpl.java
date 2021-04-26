@@ -14,11 +14,7 @@ import rs.ac.uns.ftn.bsep.service.CertificateService;
 import rs.ac.uns.ftn.bsep.service.FileReaderService;
 import rs.ac.uns.ftn.bsep.service.FileWriterService;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.*;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
@@ -227,15 +223,9 @@ public class CertificateServiceImpl implements CertificateService {
 
 
     @Override
-    public void downloadCertificate(String serialNumber) throws CertificateEncodingException, IOException {
-        String fileName = DOWNLOAD_PATH + "BSEP" + serialNumber + ".cer";
-        FileOutputStream outputStream = null;
+    public X509Certificate getCertificateBySerialNumber(String serialNumber){
         X509Certificate certificate = this.readCertificateBlind(serialNumber);
-        File file = new File(fileName);
-        byte[] buf = certificate.getEncoded();
-        FileOutputStream os = new FileOutputStream(file);
-        os.write(buf);
-        os.close();
+        return certificate;
     }
 
 

@@ -15,7 +15,7 @@
       <q-card-actions align="right">
         <q-btn @click="selectedCard=c;detailsDialog=true">Details</q-btn>
         <q-btn @click="revokeCertificate(c.serialNumber)" flat>Revoke</q-btn>
-        <q-btn @click="downloadCertificate(c.serialNumber)" flat>download</q-btn>
+        <q-btn @click="downloadCertificate(c.serialNumber)" flat>Download</q-btn>
       </q-card-actions>
     </q-card>
      </div>
@@ -42,7 +42,8 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return date.split('T')[0]
+      const dateTmp = date.toString()
+      return dateTmp.split('T')[0]
     },
     revokeCertificate (serialNumber) {
       this.$axios
@@ -62,11 +63,10 @@ export default {
         })
     },
     downloadCertificate (serialNumber) {
-      this.$axios
-        .post('https://localhost:8085/api/certificate/download', serialNumber, { headers: { 'Content-Type': 'text/plain' } })
-        .then(response => {
-          alert('download')
-        })
+      var fileLink = document.createElement('a')
+      fileLink.href = 'https://localhost:8085/api/certificate/download?serialNumber=' + serialNumber
+      document.body.appendChild(fileLink)
+      fileLink.click()
     }
   }
 }
