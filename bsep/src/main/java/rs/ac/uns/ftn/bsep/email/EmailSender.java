@@ -30,4 +30,13 @@ public class EmailSender {
         message.setText(body);
         emailSender.send(message);
     }
+
+    public void sendActivationEmail(String mail,String id){
+        SimpleMailMessage message = new SimpleMailMessage();
+        String body = String.format("Please click on the link to activate your account: http://localhost:8081/#/activate/"+id );
+        message.setTo(mail);
+        message.setSubject("Activate account");
+        message.setText(body);
+        emailSender.send(message);
+    }
 }
