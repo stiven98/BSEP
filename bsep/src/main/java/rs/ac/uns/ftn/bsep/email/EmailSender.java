@@ -24,7 +24,7 @@ public class EmailSender {
 
     public void sendResetPasswordEmail(String mail){
         SimpleMailMessage message = new SimpleMailMessage();
-        String body = String.format("Your password is successfully changed, if you didn't changed it please contact administrator. ");
+        String body = String.format("Your password is successfully changed, if you didn't change it please contact administrator. ");
         message.setTo(mail);
         message.setSubject("Changed password");
         message.setText(body);
