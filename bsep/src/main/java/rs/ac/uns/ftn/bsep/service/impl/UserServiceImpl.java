@@ -21,6 +21,7 @@ import rs.ac.uns.ftn.bsep.domain.users.EndEntity;
 import rs.ac.uns.ftn.bsep.domain.users.Intermediate;
 import rs.ac.uns.ftn.bsep.domain.users.User;
 import rs.ac.uns.ftn.bsep.email.EmailSender;
+import rs.ac.uns.ftn.bsep.repository.dbrepository.AuthorityRepository;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.ResetPasswordRequestRepository;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.UserRepository;
 import rs.ac.uns.ftn.bsep.security.TokenUtils;
@@ -43,6 +44,8 @@ public class UserServiceImpl implements UserService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private TokenUtils tokenUtils;
+    @Autowired
+    AuthorityRepository authorityRepository;
 
     @Override
     public LoginResponseDTO login(LoginDTO dto){
@@ -128,6 +131,8 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         UUID activationId=UUID.randomUUID();
+        Authority authorityUser= authorityRepository.findByRole("user");
+        Authority authorityAdmin= authorityRepository.findByRole("admin");
         switch(dto.getRole()){
             case admin:
                 Admin admin=new Admin();
@@ -135,6 +140,9 @@ public class UserServiceImpl implements UserService {
                 admin.setUsername(dto.getEmail());
                 admin.setCommonName(dto.getCommonName());
                 admin.setActivationId(activationId);
+                List<Authority> authorities=new ArrayList<>();
+                authorities.add(authorityAdmin);
+                admin.setAuthorities(authorities);
                 user= userRepository.save(admin);
                 break;
             case intermediate:
@@ -143,6 +151,9 @@ public class UserServiceImpl implements UserService {
                 intermediate.setUsername(dto.getEmail());
                 intermediate.setCommonName(dto.getCommonName());
                 intermediate.setActivationId(activationId);
+                List<Authority> authoritiesIntermediate=new ArrayList<>();
+                authoritiesIntermediate.add(authorityUser);
+                intermediate.setAuthorities(authoritiesIntermediate);
                 user = userRepository.save(intermediate);
                 break;
             case user:
@@ -151,6 +162,9 @@ public class UserServiceImpl implements UserService {
                 endEntity.setUsername(dto.getEmail());
                 endEntity.setCommonName(dto.getCommonName());
                 endEntity.setActivationId(activationId);
+                List<Authority> authorities1=new ArrayList<>();
+                authorities1.add(authorityUser);
+                endEntity.setAuthorities(authorities1);
                 user= userRepository.save(endEntity);
                 break;
         }
