@@ -15,8 +15,10 @@ import rs.ac.uns.ftn.bsep.domain.dto.LoginDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.LoginResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.RegisterUserDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.ResetPasswordDTO;
+import rs.ac.uns.ftn.bsep.domain.users.Admin;
 import rs.ac.uns.ftn.bsep.domain.users.Authority;
 import rs.ac.uns.ftn.bsep.domain.users.EndEntity;
+import rs.ac.uns.ftn.bsep.domain.users.Intermediate;
 import rs.ac.uns.ftn.bsep.domain.users.User;
 import rs.ac.uns.ftn.bsep.email.EmailSender;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.ResetPasswordRequestRepository;
@@ -121,14 +123,53 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(RegisterUserDTO dto) {
+        User user= null;
         if(!dto.getPass().equals(dto.getPass2())){
             return null;
         }
-        EndEntity endEntity=new EndEntity();
-        endEntity.setPassword(passwordEncoder.encode(dto.getPass()));
-        endEntity.setUsername(dto.getEmail());
-        endEntity.setCommonName(dto.getCommonName());
-        return userRepository.save(endEntity);
+        UUID activationId=UUID.randomUUID();
+        switch(dto.getRole()){
+            case admin:
+                Admin admin=new Admin();
+                admin.setPassword(passwordEncoder.encode(dto.getPass()));
+                admin.setUsername(dto.getEmail());
+                admin.setCommonName(dto.getCommonName());
+                admin.setActivationId(activationId);
+                user= userRepository.save(admin);
+                break;
+            case intermediate:
+                Intermediate intermediate=new Intermediate();
+                intermediate.setPassword(passwordEncoder.encode(dto.getPass()));
+                intermediate.setUsername(dto.getEmail());
+                intermediate.setCommonName(dto.getCommonName());
+                intermediate.setActivationId(activationId);
+                user = userRepository.save(intermediate);
+                break;
+            case user:
+                EndEntity endEntity=new EndEntity();
+                endEntity.setPassword(passwordEncoder.encode(dto.getPass()));
+                endEntity.setUsername(dto.getEmail());
+                endEntity.setCommonName(dto.getCommonName());
+                endEntity.setActivationId(activationId);
+                user= userRepository.save(endEntity);
+                break;
+        }
+        if(user!=null){
+            emailSender.sendActivationEmail(user.getUsername(),user.getActivationId().toString());
+        }
+        return user;
+
+    }
+
+    @Override
+    public boolean activateAccount(UUID id) {
+        User user= userRepository.findByActivationId(id);
+        if(user!=null){
+            user.setActive(true);
+            userRepository.save(user);
+            return  true;
+        }
+        return false;
     }
 
     @Override

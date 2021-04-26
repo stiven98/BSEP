@@ -16,10 +16,25 @@ const routes = [
     component: () => import('pages/ResetPassword.vue')
   },
   {
+    path: '/activate/:id',
+    component: () => import('pages/ActivateAccount.vue')
+  },
+  {
     path: '/adminHome',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/AdminHome.vue') }
+    ],
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('role') !== 'admin') next({ name: '/' })
+      else next()
+    }
+  },
+  {
+    path: '/adminRegister',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/AdminRegister.vue') }
     ],
     beforeEnter: (to, from, next) => {
       if (localStorage.getItem('role') !== 'admin') next({ name: '/' })

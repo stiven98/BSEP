@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rs.ac.uns.ftn.bsep.domain.enums.EntityType;
+import rs.ac.uns.ftn.bsep.domain.enums.Role;
 
 @Getter
 @Setter
@@ -15,5 +16,5 @@ public class RegisterUserDTO {
     private String pass;
     private String pass2;
     private String commonName;
-    private EntityType type;
+    private Role role;
 }
