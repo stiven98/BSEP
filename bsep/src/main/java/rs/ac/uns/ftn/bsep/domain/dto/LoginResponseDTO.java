@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import rs.ac.uns.ftn.bsep.domain.users.Authority;
+import rs.ac.uns.ftn.bsep.domain.users.Role;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ import java.util.List;
 public class LoginResponseDTO {
     public String username;
     public String token;
-    public List<Authority> authorityList;
+    public List<String> authorityList;
 }

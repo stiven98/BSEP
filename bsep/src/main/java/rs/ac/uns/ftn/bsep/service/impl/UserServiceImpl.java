@@ -5,7 +5,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +15,7 @@ import rs.ac.uns.ftn.bsep.domain.dto.LoginResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.RegisterUserDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.ResetPasswordDTO;
 import rs.ac.uns.ftn.bsep.domain.users.Admin;
-import rs.ac.uns.ftn.bsep.domain.users.Authority;
+import rs.ac.uns.ftn.bsep.domain.users.Role;
 import rs.ac.uns.ftn.bsep.domain.users.EndEntity;
 import rs.ac.uns.ftn.bsep.domain.users.Intermediate;
 import rs.ac.uns.ftn.bsep.domain.users.User;
@@ -58,8 +57,8 @@ public class UserServiceImpl implements UserService {
         User user = (User) authentication.getPrincipal();
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
-        List<Authority> authorities = new ArrayList<>();
-        user.getAuthorities().stream().forEach(a -> authorities.add((Authority) a));
+        List<String> authorities = new ArrayList<>();
+        user.getAuthorities().stream().forEach(a -> authorities.add(a.getAuthority()));
         // Vrati token kao odgovor na uspesnu autentifikaciju
         LoginResponseDTO responseDTO= new LoginResponseDTO(user.getUsername(),jwt,authorities);
         return responseDTO;
@@ -131,8 +130,8 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         UUID activationId=UUID.randomUUID();
-        Authority authorityUser= authorityRepository.findByRole("user");
-        Authority authorityAdmin= authorityRepository.findByRole("admin");
+        Role authorityUser= authorityRepository.findByRole("user");
+        Role authorityAdmin= authorityRepository.findByRole("admin");
         switch(dto.getRole()){
             case admin:
                 Admin admin=new Admin();
@@ -140,9 +139,9 @@ public class UserServiceImpl implements UserService {
                 admin.setUsername(dto.getEmail());
                 admin.setCommonName(dto.getCommonName());
                 admin.setActivationId(activationId);
-                List<Authority> authorities=new ArrayList<>();
+                List<Role> authorities=new ArrayList<>();
                 authorities.add(authorityAdmin);
-                admin.setAuthorities(authorities);
+                admin.setRoles(authorities);
                 user= userRepository.save(admin);
                 break;
             case intermediate:
@@ -151,9 +150,9 @@ public class UserServiceImpl implements UserService {
                 intermediate.setUsername(dto.getEmail());
                 intermediate.setCommonName(dto.getCommonName());
                 intermediate.setActivationId(activationId);
-                List<Authority> authoritiesIntermediate=new ArrayList<>();
+                List<Role> authoritiesIntermediate=new ArrayList<>();
                 authoritiesIntermediate.add(authorityUser);
-                intermediate.setAuthorities(authoritiesIntermediate);
+                intermediate.setRoles(authoritiesIntermediate);
                 user = userRepository.save(intermediate);
                 break;
             case user:
@@ -162,9 +161,9 @@ public class UserServiceImpl implements UserService {
                 endEntity.setUsername(dto.getEmail());
                 endEntity.setCommonName(dto.getCommonName());
                 endEntity.setActivationId(activationId);
-                List<Authority> authorities1=new ArrayList<>();
+                List<Role> authorities1=new ArrayList<>();
                 authorities1.add(authorityUser);
-                endEntity.setAuthorities(authorities1);
+                endEntity.setRoles(authorities1);
                 user= userRepository.save(endEntity);
                 break;
         }

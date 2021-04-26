@@ -3,6 +3,7 @@ package rs.ac.uns.ftn.bsep.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import rs.ac.uns.ftn.bsep.domain.certificate.Certificate;
 import rs.ac.uns.ftn.bsep.domain.dto.CertificateDataDTO;
@@ -41,6 +42,7 @@ public class CertificateController {
         else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('READ')")
     @GetMapping("/all")
     public List<CertificateResponseDTO> getAll(){
         return certificateService.getAllWithIssuer();

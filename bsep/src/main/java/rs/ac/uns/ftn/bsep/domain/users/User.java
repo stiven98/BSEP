@@ -5,14 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import rs.ac.uns.ftn.bsep.domain.enums.Role;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -37,15 +34,24 @@ public abstract class User implements UserDetails {
     private UUID activationId;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority",
+    @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
-    private List<Authority> authorities = new ArrayList<Authority>() {
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles = new ArrayList<Role>() {
     };
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        Collection<GrantedAuthority> authorities = new HashSet<>();
+        for(Role role : roles){
+            System.out.println(role.getRole());
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+            for(Privilege privilege : role.getPrivileges()){
+                System.out.println(privilege.getName());
+                authorities.add(new SimpleGrantedAuthority(privilege.getName()));
+            }
+        }
+        return authorities;
     }
 
     @Override
