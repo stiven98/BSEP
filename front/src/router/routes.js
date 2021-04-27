@@ -12,6 +12,10 @@ const routes = [
     component: () => import('pages/Register.vue')
   },
   {
+    path: '/unauthorized',
+    component: () => import('pages/Error401.vue')
+  },
+  {
     path: '/reset/:id',
     component: () => import('pages/ResetPassword.vue')
   },
@@ -26,7 +30,7 @@ const routes = [
       { path: '', component: () => import('pages/AdminHome.vue') }
     ],
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next({ name: '/' })
+      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next('/unauthorized')
       else next()
     }
   },
@@ -37,7 +41,7 @@ const routes = [
       { path: '', component: () => import('pages/AdminRegister.vue') }
     ],
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next({ name: '/' })
+      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next('/unauthorized')
       else next()
     }
   },
@@ -48,7 +52,7 @@ const routes = [
       { path: '', component: () => import('pages/UserHome.vue') }
     ],
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('role') !== 'ROLE_USER') next({ name: '/' })
+      if (localStorage.getItem('role') !== 'ROLE_USER') next('/unauthorized')
       else next()
     }
   },
@@ -59,7 +63,7 @@ const routes = [
       { path: '', component: () => import('pages/AddCertificate.vue') }
     ],
     beforeEnter: (to, from, next) => {
-      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next({ name: '/' })
+      if (localStorage.getItem('role') !== 'ROLE_ADMIN') next('/unauthorized')
       else next()
     }
   },

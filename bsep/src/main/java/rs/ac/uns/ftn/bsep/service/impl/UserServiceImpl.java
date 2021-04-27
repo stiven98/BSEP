@@ -27,6 +27,8 @@ import rs.ac.uns.ftn.bsep.security.TokenUtils;
 import rs.ac.uns.ftn.bsep.service.UserService;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -123,15 +125,43 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    public boolean validateEmail(String email){
+        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return  matcher.matches();
+
+    }
+
+    public boolean validatePassword(String pass,String pass2){
+        if(pass.equals(pass2)){
+            String regex = "((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!.'<>;:]).{8,40})";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(pass);
+            return matcher.matches();
+        }
+        return false;
+    }
+
+    public boolean checkCommonName(String name){
+        if(name!=null){
+            if(name.length()>=2){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     @Override
     public User register(RegisterUserDTO dto) {
         User user= null;
-        if(!dto.getPass().equals(dto.getPass2())){
+        if(!dto.getPass().equals(dto.getPass2()) || !validateEmail(dto.getEmail()) || !validatePassword(dto.getPass(), dto.getPass2()) ||  !checkCommonName(dto.getCommonName())){
             return null;
         }
         UUID activationId=UUID.randomUUID();
-        Role authorityUser= authorityRepository.findByRole("user");
-        Role authorityAdmin= authorityRepository.findByRole("admin");
+        Role authorityUser= authorityRepository.findByRole("ROLE_USER");
+        Role authorityAdmin= authorityRepository.findByRole("ROLE_ADMIN");
         switch(dto.getRole()){
             case admin:
                 Admin admin=new Admin();
