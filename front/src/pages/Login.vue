@@ -66,11 +66,12 @@ export default {
         .then(response => {
           localStorage.setItem('user', response.data.username)
           localStorage.setItem('token', response.data.token)
-          localStorage.setItem('role', response.data.authorityList[1])
           if (response.data.authorityList.includes('ROLE_USER')) {
+            localStorage.setItem('role', 'ROLE_USER')
             this.$router.push('userHome')
           }
           if (response.data.authorityList.includes('ROLE_ADMIN')) {
+            localStorage.setItem('role', 'ROLE_ADMIN')
             this.$router.push('adminHome')
           }
         })
