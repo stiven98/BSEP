@@ -34,12 +34,13 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return date.split('T')[0]
+      const dateTmp = date.toString()
+      return dateTmp.split('T')[0]
     }
   },
   beforeMount () {
     this.$axios
-      .post('https://localhost:8085/api/certificate/getByMail', 'stiven@stiven.com', { headers: { 'Content-Type': 'text/plain' } })
+      .post('https://localhost:8085/api/certificate/getByMail', localStorage.getItem('user'), { headers: { 'Content-Type': 'text/plain' } })
       .then(response => {
         this.allCertificates = response.data
       })

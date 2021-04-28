@@ -28,6 +28,7 @@ public class CertificateController {
     @Autowired
     CertificateService certificateService;
 
+    @PreAuthorize("hasAuthority('WRITE_ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<?>CreateCertificate(@RequestBody CertificateDataDTO cet) {
         if(cet.getCertificateType() == CertificateType.root){
@@ -42,23 +43,26 @@ public class CertificateController {
         else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('READ')")
+    @PreAuthorize("hasAuthority('READ_ADMIN')")
     @GetMapping("/all")
     public List<CertificateResponseDTO> getAll(){
         return certificateService.getAllWithIssuer();
     }
 
+    @PreAuthorize("hasAuthority('READ_ADMIN')")
     @PostMapping("/validIssuers")
     public List<Certificate> getAllValidIssuers(@RequestBody DateDTO date){
         return certificateService.getAllValidCertificates(date.getStartDate(), date.getEndDate());
     }
 
+    @PreAuthorize("hasAuthority('WRITE_ADMIN')")
     @PostMapping("/revoke")
     public ResponseEntity<?> revokeCertificate(@RequestBody String serialNumber) {
         this.certificateService.revokeCertificate(serialNumber);
         return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('READ')")
     @PostMapping("/getByMail")
     public ResponseEntity<?> getByMail(@RequestBody String email) {
         return new ResponseEntity<>(certificateService.getByEmailWithIssuer(email), HttpStatus.OK);

@@ -14,13 +14,10 @@ import rs.ac.uns.ftn.bsep.domain.dto.LoginDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.LoginResponseDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.RegisterUserDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.ResetPasswordDTO;
-import rs.ac.uns.ftn.bsep.domain.users.Admin;
-import rs.ac.uns.ftn.bsep.domain.users.Role;
-import rs.ac.uns.ftn.bsep.domain.users.EndEntity;
-import rs.ac.uns.ftn.bsep.domain.users.Intermediate;
-import rs.ac.uns.ftn.bsep.domain.users.User;
+import rs.ac.uns.ftn.bsep.domain.users.*;
 import rs.ac.uns.ftn.bsep.email.EmailSender;
-import rs.ac.uns.ftn.bsep.repository.dbrepository.AuthorityRepository;
+import rs.ac.uns.ftn.bsep.repository.dbrepository.RoleRepository;
+import rs.ac.uns.ftn.bsep.repository.dbrepository.PrivilegeRepository;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.ResetPasswordRequestRepository;
 import rs.ac.uns.ftn.bsep.repository.dbrepository.UserRepository;
 import rs.ac.uns.ftn.bsep.security.TokenUtils;
@@ -46,7 +43,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TokenUtils tokenUtils;
     @Autowired
-    AuthorityRepository authorityRepository;
+    RoleRepository roleRepository;
+    @Autowired
+    PrivilegeRepository privilegeRepository;
 
     @Override
     public LoginResponseDTO login(LoginDTO dto){
@@ -146,7 +145,10 @@ public class UserServiceImpl implements UserService {
     public boolean checkCommonName(String name){
         if(name!=null){
             if(name.length()>=2){
-                return true;
+                String regex = "^((?![<>?=+-;:'/,]).)*$";
+                Pattern pattern= Pattern.compile(regex);
+                Matcher matcher= pattern.matcher(name);
+                return matcher.matches();
             }
         }
         return false;
@@ -156,12 +158,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(RegisterUserDTO dto) {
         User user= null;
+        System.out.println(checkCommonName(dto.getCommonName())+ "NAME");
         if(!dto.getPass().equals(dto.getPass2()) || !validateEmail(dto.getEmail()) || !validatePassword(dto.getPass(), dto.getPass2()) ||  !checkCommonName(dto.getCommonName())){
             return null;
         }
         UUID activationId=UUID.randomUUID();
-        Role authorityUser= authorityRepository.findByRole("ROLE_USER");
-        Role authorityAdmin= authorityRepository.findByRole("ROLE_ADMIN");
+        Role authorityUser= roleRepository.findByRole("ROLE_USER");
+        Role authorityAdmin= roleRepository.findByRole("ROLE_ADMIN");
         switch(dto.getRole()){
             case admin:
                 Admin admin=new Admin();

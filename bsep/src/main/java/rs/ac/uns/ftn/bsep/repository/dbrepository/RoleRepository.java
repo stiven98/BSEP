@@ -5,6 +5,6 @@ import rs.ac.uns.ftn.bsep.domain.users.Role;
 
 import java.util.UUID;
 
-public interface AuthorityRepository extends JpaRepository<Role, UUID> {
+public interface RoleRepository extends JpaRepository<Role, UUID> {
     Role findByRole(String role);
 }

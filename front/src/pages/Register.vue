@@ -22,14 +22,14 @@
         v-model="firstname"
         label="First name"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        :rules="[ val => val && val.length > 0 || 'Please type something',specialCharacter]"
       />
        <q-input
         filled
         v-model="lastname"
         label="Last name"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        :rules="[ val => val && val.length > 0 || 'Please type something',specialCharacter]"
       />
       </div>
        <q-input v-else
@@ -37,7 +37,7 @@
         v-model="commonName"
         label="Common name"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        :rules="[ val => val && val.length > 0 || 'Please type something',specialCharacter]"
       />
          <q-input
         filled
@@ -122,6 +122,10 @@ export default {
     },
     passwordValidLength (val) {
       return val.length > 8 || 'Must contain 8 characters '
+    },
+    specialCharacter (val) {
+      const format = /^((?![<>?=+-;:'/,]).)*$/
+      return format.test(val) || 'Must not contain special characters!'
     }
   }
 }

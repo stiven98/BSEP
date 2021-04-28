@@ -57,6 +57,11 @@ export default {
       forgotEmail: ''
     }
   },
+  beforeMount () {
+    localStorage.setItem('user', '')
+    localStorage.setItem('token', '')
+    localStorage.setItem('role', '')
+  },
   methods: {
     onSubmit () {
       this.$axios.post('https://localhost:8085/api/users/login', {
