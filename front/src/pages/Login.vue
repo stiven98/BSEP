@@ -89,6 +89,10 @@ export default {
         .then(res => {
           alert(res.data)
         })
+    },
+    specialCharacter (val) {
+      const format = /^((?![<>?=+-;:'/,]).)*$/
+      return format.test(val) || 'Must not contain special characters!'
     }
   }
 }

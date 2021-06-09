@@ -1,5 +1,6 @@
 package rs.ac.uns.ftn.bsep.service.impl;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponseDTO login(LoginDTO dto){
+
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(),
                         dto.getPassword()));
@@ -73,16 +75,15 @@ public class UserServiceImpl implements UserService {
         }
         ResetPasswordRequest request=new ResetPasswordRequest();
         request.setEmail(email);
-        request.setId(UUID.randomUUID());
         request.setUsed(false);
         Date date=new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DATE, 1);
         request.setValidTo(cal.getTime());
-        passwordRequestRepository.save(request);
+        ResetPasswordRequest request1=passwordRequestRepository.save(request);
         try {
-            emailSender.sendForgotPasswordEmail(request.getId().toString(),email);
+            emailSender.sendForgotPasswordEmail(request1.getId().toString(),email);
         } catch(Exception e) {
             return false;
         }

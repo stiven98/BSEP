@@ -12,11 +12,15 @@ import rs.ac.uns.ftn.bsep.domain.dto.DateDTO;
 import rs.ac.uns.ftn.bsep.domain.enums.CertificateType;
 import rs.ac.uns.ftn.bsep.service.CertificateGeneratorService;
 import rs.ac.uns.ftn.bsep.service.CertificateService;
+import rs.ac.uns.ftn.bsep.service.impl.LoggerService;
 
 import java.io.IOException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/api/certificate", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,6 +31,11 @@ public class CertificateController {
 
     @Autowired
     CertificateService certificateService;
+
+    @Autowired
+    LoggerService loggerService;
+
+
 
     @PreAuthorize("hasAuthority('WRITE_ADMIN')")
     @PostMapping("/create")
@@ -43,9 +52,10 @@ public class CertificateController {
         else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('READ_ADMIN')")
+   // @PreAuthorize("hasAuthority('READ_ADMIN')")
     @GetMapping("/all")
-    public List<CertificateResponseDTO> getAll(){
+    public List<CertificateResponseDTO> getAll() throws IOException {
+        loggerService.logger.log(Level.SEVERE,"PUSI MAJMUNE");
         return certificateService.getAllWithIssuer();
     }
 

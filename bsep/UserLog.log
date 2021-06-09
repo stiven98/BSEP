@@ -1,0 +1,6 @@
+Jun 09, 2021 7:46:47 PM rs.ac.uns.ftn.bsep.controller.UserController createAuthenticationToken
+WARNING: Bad login request
+Jun 09, 2021 7:47:03 PM rs.ac.uns.ftn.bsep.controller.UserController createAuthenticationToken
+WARNING: Bad login request
+Jun 09, 2021 7:47:25 PM rs.ac.uns.ftn.bsep.controller.UserController createAuthenticationToken
+INFO: Successfully login
