@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.bsep.service.impl;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,6 +50,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PrivilegeRepository privilegeRepository;
 
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
     @Override
     public LoginResponseDTO login(LoginDTO dto){
 
@@ -71,6 +76,7 @@ public class UserServiceImpl implements UserService {
     public boolean sendResetPasswordRequest(String email) {
         User user= userRepository.findUserByEmail(email);
         if(user==null){
+            log.error("Send reset password error,user do not exist:" +email );
             return false;
         }
         ResetPasswordRequest request=new ResetPasswordRequest();
@@ -85,6 +91,7 @@ public class UserServiceImpl implements UserService {
         try {
             emailSender.sendForgotPasswordEmail(request1.getId().toString(),email);
         } catch(Exception e) {
+            log.error(e.getMessage());
             return false;
         }
         return true;
@@ -106,11 +113,14 @@ public class UserServiceImpl implements UserService {
                 try {
                     emailSender.sendResetPasswordEmail(request.getEmail());
                 }catch (Exception e){
+                    log.warn("Failed to send email");
                     return false;
                 }
+                log.info("Password successfully changed user :" +user.getUsername());
                 return true;
             }
         }
+        log.warn("Failed to reset password invalid request:"+ dto.getRequestId() );
         return false;
     }
 

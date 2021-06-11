@@ -37,14 +37,22 @@ public class CertificateController {
     public ResponseEntity<?>CreateCertificate(@RequestBody CertificateDataDTO cet) {
         if(cet.getCertificateType() == CertificateType.root){
             if(certificateGeneratorService.generateRootCertificate(cet) != null){
+                log.info("Certificate successfully created - "+ cet.getCommonName());
                 return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
             }
-            else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
+            else{
+                log.warn("Invalid certificate creation - "+ cet.getCommonName());
+                return new ResponseEntity<>("Bad luck!!!", HttpStatus.BAD_REQUEST);
+            }
         }
         if(certificateGeneratorService.generateCertificate(cet) != null){
+            log.info("Certificate successfully created - "+ cet.getCommonName());
             return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
         }
-        else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
+        else {
+            log.warn("Invalid certificate creation - "+ cet.getCommonName());
+            return new ResponseEntity<>("Bad luck!!!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PreAuthorize("hasAuthority('READ_ADMIN')")

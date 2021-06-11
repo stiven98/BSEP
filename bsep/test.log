@@ -8,3 +8,19 @@
 11-06-2021 15:24:50.476 | WARN  | rs.ac.uns.ftn.bsep.security.auth.CustomAccessDeniedHandler.handle | User: admin attempted to access the protected URL: /api/certificate/getByMail
 11-06-2021 15:28:04.954 | WARN  | rs.ac.uns.ftn.bsep.security.auth.CustomAccessDeniedHandler.handle | User: admin attempted to access the protected URL: /api/certificate/getByMail
 11-06-2021 15:32:01.272 | WARN  | rs.ac.uns.ftn.bsep.security.auth.CustomAccessDeniedHandler.handle | User: admin attempted to access the protected URL: /api/certificate/getByMail
+11-06-2021 17:21:10.403 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
+11-06-2021 17:24:04.427 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in aaa, from: http://localhost:8080
+11-06-2021 17:24:22.477 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
+11-06-2021 17:26:29.324 | ERROR | rs.ac.uns.ftn.bsep.controller.CertificateController.sendResetPasswordRequest | PUKO EXCEPTION
+11-06-2021 17:26:29.329 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
+11-06-2021 17:29:28.942 | ERROR | rs.ac.uns.ftn.bsep.controller.CertificateController.sendResetPasswordRequest | PUKO EXCEPTION
+11-06-2021 17:29:28.944 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
+11-06-2021 17:29:55.475 | ERROR | rs.ac.uns.ftn.bsep.controller.CertificateController.sendResetPasswordRequest | PUKO EXCEPTION
+11-06-2021 17:29:55.480 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
+11-06-2021 17:31:05.265 | ERROR | rs.ac.uns.ftn.bsep.controller.CertificateController.sendResetPasswordRequest | Authentication failed; nested exception is javax.mail.AuthenticationFailedException: 535-5.7.8 Username and Password not accepted. Learn more at
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d22sm2330904ejj.47 - gsmtp
+
+11-06-2021 17:31:05.269 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
+11-06-2021 17:34:01.918 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Sent mail for password recover - stojakovic_djordje@yahoo.com
+11-06-2021 17:34:49.772 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.checkRequest | Valid reset password request | 70bc4e77-3c9e-439c-a6db-a6e20c950794
+11-06-2021 17:35:36.941 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Successfully logged in stojakovic_djordje@yahoo.com
