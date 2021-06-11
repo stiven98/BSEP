@@ -20,7 +20,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        log.warn("Unauthorized access to: "+ request.getRequestURI()  + " from " + request.getHeader("Origin"));
+        log.warn("Tried unauthorized access to: "+ request.getRequestURI()  + " from " + request.getHeader("Origin"));
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
     }
 }

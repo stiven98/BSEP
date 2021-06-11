@@ -38,7 +38,7 @@ public class UserController {
             return new ResponseEntity<>(userService.login(dto), HttpStatus.OK);
 
         }catch (Exception e){
-            log.warn("Failed to log in "+ dto.getUsername() + ",from: " + request.getHeader("Origin"));
+            log.warn("Failed to log in "+ dto.getUsername() + ", from: " + request.getHeader("Origin"));
         }
         return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
