@@ -47,10 +47,9 @@ public class CertificateController {
         else return new ResponseEntity<>("Bad luck!!!", HttpStatus.OK);
     }
 
-   // @PreAuthorize("hasAuthority('READ_ADMIN')")
+    @PreAuthorize("hasAuthority('READ_ADMIN')")
     @GetMapping("/all")
     public List<CertificateResponseDTO> getAll() throws IOException {
-        log.info("GETALL");
         return certificateService.getAllWithIssuer();
     }
 
@@ -63,8 +62,12 @@ public class CertificateController {
     @PreAuthorize("hasAuthority('WRITE_ADMIN')")
     @PostMapping("/revoke")
     public ResponseEntity<?> revokeCertificate(@RequestBody String serialNumber) {
-        this.certificateService.revokeCertificate(serialNumber);
-        return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
+        if(certificateService.revokeCertificate(serialNumber)){
+            log.info("Certificate "+ serialNumber +" successfully revoked");
+            return new ResponseEntity<>("Surprise!!!", HttpStatus.OK);
+        }
+        log.info("Failed to revoke "+ serialNumber +" certificate");
+        return new ResponseEntity<>("FAILED!!!", HttpStatus.BAD_REQUEST);
     }
 
     @PreAuthorize("hasAuthority('READ')")

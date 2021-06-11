@@ -16,6 +16,7 @@ import rs.ac.uns.ftn.bsep.domain.users.User;
 import rs.ac.uns.ftn.bsep.service.UserService;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -30,15 +31,14 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> createAuthenticationToken(@RequestBody LoginDTO dto) throws IOException {
+    public ResponseEntity<LoginResponseDTO> createAuthenticationToken(@RequestBody LoginDTO dto, HttpServletRequest request) throws IOException {
         try {
             userService.login(dto);
             log.info("Successfully logged in "+ dto.getUsername());
-            //loggerServi.log(org.apache.logging.log4j.Level.INFO,"USPEO");
             return new ResponseEntity<>(userService.login(dto), HttpStatus.OK);
 
         }catch (Exception e){
-            log.warn("Failed to log in "+ dto.getUsername());
+            log.warn("Failed to log in "+ dto.getUsername() + ",from: " + request.getHeader("Origin"));
         }
         return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
@@ -56,10 +56,8 @@ public class UserController {
     @PostMapping("/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO dto){
         if(userService.resetPassword(dto)){
-
             return new ResponseEntity(HttpStatus.OK);
         }
-
         return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
 

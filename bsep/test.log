@@ -1,7 +1,0 @@
-2021-06-11 13:49:07.523 ERROR 16924 --- [https-jsse-nio-8085-exec-7] r.a.u.f.bsep.controller.UserController   : nisam uspeo
-2021-06-11 13:49:07.692  WARN 16924 --- [https-jsse-nio-8085-exec-8] global                                   : Bad login request
-2021-06-11 13:49:07.693 ERROR 16924 --- [https-jsse-nio-8085-exec-8] r.a.u.f.bsep.controller.UserController   : nisam uspeo
-2021-06-11 13:54:37.046  WARN 21532 --- [https-jsse-nio-8085-exec-9] global                                   : Bad login request
-2021-06-11 13:54:37.048 ERROR 21532 --- [https-jsse-nio-8085-exec-9] r.a.u.f.bsep.controller.UserController   : nisam uspeo
-2021-06-11 13:54:46.166  INFO 21532 --- [https-jsse-nio-8085-exec-10] global                                   : Successfully login
-2021-06-11 13:54:47.140  INFO 21532 --- [https-jsse-nio-8085-exec-3] r.a.u.f.b.c.CertificateController        : GETALL
