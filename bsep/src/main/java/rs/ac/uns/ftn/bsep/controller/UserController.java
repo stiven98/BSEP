@@ -1,6 +1,8 @@
 package rs.ac.uns.ftn.bsep.controller;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,14 +14,10 @@ import rs.ac.uns.ftn.bsep.domain.dto.RegisterUserDTO;
 import rs.ac.uns.ftn.bsep.domain.dto.ResetPasswordDTO;
 import rs.ac.uns.ftn.bsep.domain.users.User;
 import rs.ac.uns.ftn.bsep.service.UserService;
-import rs.ac.uns.ftn.bsep.service.impl.LoggerService;
 
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 @RestController
@@ -28,19 +26,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private LoggerService loggerService;
+      private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> createAuthenticationToken(@RequestBody LoginDTO dto) throws IOException {
         try {
             userService.login(dto);
-            loggerService.logger.log(Level.INFO,"Successfully login");
+            log.info("Successfully logged in "+ dto.getUsername());
+            //loggerServi.log(org.apache.logging.log4j.Level.INFO,"USPEO");
             return new ResponseEntity<>(userService.login(dto), HttpStatus.OK);
 
         }catch (Exception e){
-            loggerService.logger.log(Level.WARNING,"Bad login request");
+            log.warn("Failed to log in "+ dto.getUsername());
         }
         return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
@@ -48,30 +46,30 @@ public class UserController {
     @PostMapping("/forgotPassword")
     public HttpStatus forgotPassword(@RequestBody String email) {
             if(userService.sendResetPasswordRequest(email)){
-                loggerService.logger.info("Sent mail for password recover");
+                log.info("Sent mail for password recover - " +email);
                 return HttpStatus.OK;
             }
-        loggerService.logger.info("Bad request for password recovery");
+        log.warn("Bad request for password recovery - "+email );
         return HttpStatus.BAD_REQUEST;
     }
 
     @PostMapping("/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO dto){
         if(userService.resetPassword(dto)){
-            loggerService.logger.info("Password successfully changed");
+
             return new ResponseEntity(HttpStatus.OK);
         }
-        loggerService.logger.log(Level.WARNING,"Bad reset password request");
+
         return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/checkRequest/{id}")
     public ResponseEntity<?> checkRequest(@PathVariable("id")String id){
         if(userService.checkRequest(UUID.fromString(id))!=null){
-            loggerService.logger.log(Level.INFO,"Valid reset password request");
+            log.info("Valid reset password request | " + id);
             return new ResponseEntity(HttpStatus.OK);
         }
-        loggerService.logger.log(Level.WARNING,"Invalid reset password request");
+        log.warn("Invalid reset password request | " +id);
         return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
 
@@ -87,10 +85,10 @@ public class UserController {
     public ResponseEntity<User> register(@RequestBody RegisterUserDTO dto){
         User user= userService.register(dto);
         if(user!=null){
-            loggerService.logger.log(Level.INFO,"Successfully registered");
+            log.info("Successfully registered user : " + user.getUsername());
             return new ResponseEntity<User>(user,HttpStatus.OK);
         }
-        loggerService.logger.log(Level.WARNING,"Bad register request");
+        log.warn("Bad register request user: "+dto.getEmail());
         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
     }
 
