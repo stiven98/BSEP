@@ -1,26 +1,308 @@
-11-06-2021 15:05:05.958 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in aco@aco.com,from: http://localhost:8080
-11-06-2021 15:19:35.384 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in aco@aco.com, from: http://localhost:8080
-11-06-2021 15:20:38.614 | WARN  | rs.ac.uns.ftn.bsep.security.auth.RestAuthenticationEntryPoint.commence | Tried unauthorized access to: /api/certificate/all from null
-11-06-2021 15:21:01.794 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Successfully logged in admin
-11-06-2021 15:22:03.884 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Successfully logged in admin
-11-06-2021 15:22:42.668 | WARN  | rs.ac.uns.ftn.bsep.security.auth.RestAuthenticationEntryPoint.commence | Tried unauthorized access to: /api/certificate/getByMail from null
-11-06-2021 15:24:33.900 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Successfully logged in admin
-11-06-2021 15:24:50.476 | WARN  | rs.ac.uns.ftn.bsep.security.auth.CustomAccessDeniedHandler.handle | User: admin attempted to access the protected URL: /api/certificate/getByMail
-11-06-2021 15:28:04.954 | WARN  | rs.ac.uns.ftn.bsep.security.auth.CustomAccessDeniedHandler.handle | User: admin attempted to access the protected URL: /api/certificate/getByMail
-11-06-2021 15:32:01.272 | WARN  | rs.ac.uns.ftn.bsep.security.auth.CustomAccessDeniedHandler.handle | User: admin attempted to access the protected URL: /api/certificate/getByMail
-11-06-2021 17:21:10.403 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
-11-06-2021 17:24:04.427 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in aaa, from: http://localhost:8080
-11-06-2021 17:24:22.477 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
-11-06-2021 17:26:29.324 | ERROR | rs.ac.uns.ftn.bsep.controller.CertificateController.sendResetPasswordRequest | PUKO EXCEPTION
-11-06-2021 17:26:29.329 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
-11-06-2021 17:29:28.942 | ERROR | rs.ac.uns.ftn.bsep.controller.CertificateController.sendResetPasswordRequest | PUKO EXCEPTION
-11-06-2021 17:29:28.944 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
-11-06-2021 17:29:55.475 | ERROR | rs.ac.uns.ftn.bsep.controller.CertificateController.sendResetPasswordRequest | PUKO EXCEPTION
-11-06-2021 17:29:55.480 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
-11-06-2021 17:31:05.265 | ERROR | rs.ac.uns.ftn.bsep.controller.CertificateController.sendResetPasswordRequest | Authentication failed; nested exception is javax.mail.AuthenticationFailedException: 535-5.7.8 Username and Password not accepted. Learn more at
-535 5.7.8  https://support.google.com/mail/?p=BadCredentials d22sm2330904ejj.47 - gsmtp
-
-11-06-2021 17:31:05.269 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Bad request for password recovery - stojakovic_djordje@yahoo.com
-11-06-2021 17:34:01.918 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.forgotPassword | Sent mail for password recover - stojakovic_djordje@yahoo.com
-11-06-2021 17:34:49.772 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.checkRequest | Valid reset password request | 70bc4e77-3c9e-439c-a6db-a6e20c950794
-11-06-2021 17:35:36.941 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Successfully logged in stojakovic_djordje@yahoo.com
+12-06-2021 15:12:10.691 | WARN  | rs.ac.uns.ftn.bsep.security.auth.RestAuthenticationEntryPoint.commence | Tried unauthorized access to: /api/users from null
+12-06-2021 15:15:30.152 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.register | Successfully registered user : proba@nesto.com
+12-06-2021 15:23:10.540 | WARN  | rs.ac.uns.ftn.bsep.security.auth.RestAuthenticationEntryPoint.commence | Tried unauthorized access to: /api/users/verifyCode from null
+12-06-2021 15:23:15.927 | WARN  | rs.ac.uns.ftn.bsep.security.auth.RestAuthenticationEntryPoint.commence | Tried unauthorized access to: /api/users/verifyCode from null
+12-06-2021 15:24:42.376 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:24:58.889 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:25:09.856 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:25:18.232 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:27:30.929 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | 3FNBFIVIRDAGONIB3AM4XGQ7CPSNILKF
+12-06-2021 15:27:30.938 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:29:02.514 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 966 612
+12-06-2021 15:29:02.588 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | 3FNBFIVIRDAGONIB3AM4XGQ7CPSNILKF
+12-06-2021 15:29:02.595 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:29:19.508 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 178325
+12-06-2021 15:29:19.513 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | 3FNBFIVIRDAGONIB3AM4XGQ7CPSNILKF
+12-06-2021 15:29:19.519 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:29:21.095 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 178325
+12-06-2021 15:29:21.104 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | 3FNBFIVIRDAGONIB3AM4XGQ7CPSNILKF
+12-06-2021 15:29:21.105 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:30:08.680 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 560509
+12-06-2021 15:30:08.684 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | 3FNBFIVIRDAGONIB3AM4XGQ7CPSNILKF
+12-06-2021 15:30:08.685 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:36:39.313 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 560509
+12-06-2021 15:36:39.381 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:37:16.929 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 880852
+12-06-2021 15:37:16.935 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:37:37.779 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 379126
+12-06-2021 15:37:37.788 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:37:39.130 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 379126
+12-06-2021 15:37:39.145 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:38:18.426 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 379126
+12-06-2021 15:38:18.486 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Code verified for user:proba@nesto.com
+12-06-2021 15:38:18.486 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:38:40.941 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 838932
+12-06-2021 15:38:40.948 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Code verified for user:proba@nesto.com
+12-06-2021 15:38:40.948 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:38:46.350 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 838932
+12-06-2021 15:38:46.362 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Code verified for user:proba@nesto.com
+12-06-2021 15:38:46.364 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:39:48.758 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 838932
+12-06-2021 15:39:48.827 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:40:11.871 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 930263
+12-06-2021 15:40:11.876 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Code verified for user:proba@nesto.com
+12-06-2021 15:40:11.877 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:41:31.948 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 930263
+12-06-2021 15:41:32.018 | WARN  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Invalid code for: proba@nesto.com
+12-06-2021 15:41:41.277 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 748602
+12-06-2021 15:41:41.282 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Code verified for user:proba@nesto.com
+12-06-2021 15:52:07.827 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 15:52:26.522 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 15:53:00.403 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 15:56:39.677 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+12-06-2021 15:56:39.681 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+12-06-2021 15:56:40.465 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+12-06-2021 15:56:40.615 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Finished Spring Data repository scanning in 140 ms. Found 9 JPA repository interfaces.
+12-06-2021 15:56:41.049 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@b34d4b6a' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 15:56:41.056 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 15:56:41.680 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize | Tomcat initialized with port(s): 8085 (https) 8082 (http)
+12-06-2021 15:56:41.700 | INFO  | org.apache.catalina.core.StandardService.log | Starting service [Tomcat]
+12-06-2021 15:56:41.703 | INFO  | org.apache.catalina.core.StandardEngine.log | Starting Servlet engine: [Apache Tomcat/9.0.45]
+12-06-2021 15:56:41.838 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring embedded WebApplicationContext
+12-06-2021 15:56:41.839 | INFO  | org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext | Root WebApplicationContext: initialization completed in 2155 ms
+12-06-2021 15:56:42.221 | INFO  | org.hibernate.jpa.internal.util.LogHelper.logPersistenceUnitInformation | HHH000204: Processing PersistenceUnitInfo [name: default]
+12-06-2021 15:56:42.273 | INFO  | org.hibernate.Version.logVersion | HHH000412: Hibernate ORM core version 5.4.30.Final
+12-06-2021 15:56:42.403 | INFO  | org.hibernate.annotations.common.Version.<clinit> | HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+12-06-2021 15:56:42.509 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Starting...
+12-06-2021 15:56:42.684 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Start completed.
+12-06-2021 15:56:42.699 | INFO  | org.hibernate.dialect.Dialect.<init> | HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+12-06-2021 15:56:44.172 | WARN  | org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl.handleException | GenerationTarget encountered exception accepting command : Error executing DDL "alter table if exists user_role add constraint FKj345gk1bovqvfame88rcx7yyx foreign key (user_id) references users" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table if exists user_role add constraint FKj345gk1bovqvfame88rcx7yyx foreign key (user_id) references users" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:318)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:468)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$$Lambda$301/0x0000000000000000.getObject(Unknown Source)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:144)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:782)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:774)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:339)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1340)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1329)
+	at rs.ac.uns.ftn.bsep.BsepApplication.main(BsepApplication.java:17)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.postgresql.util.PSQLException: ERROR: insert or update on table "user_role" violates foreign key constraint "fkj345gk1bovqvfame88rcx7yyx"
+  Detail: Key (user_id)=(69b0597e-4a63-49e5-ae40-5b159ada82b9) is not present in table "users".
+	at org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2553)
+	at org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2285)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:323)
+	at org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:481)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:401)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:322)
+	at org.postgresql.jdbc.PgStatement.executeCachedSql(PgStatement.java:308)
+	at org.postgresql.jdbc.PgStatement.executeWithFlags(PgStatement.java:284)
+	at org.postgresql.jdbc.PgStatement.execute(PgStatement.java:279)
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95)
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 40 common frames omitted
+12-06-2021 15:56:44.174 | INFO  | org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator.initiateService | HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12-06-2021 15:56:44.183 | INFO  | org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory | Initialized JPA EntityManagerFactory for persistence unit 'default'
+12-06-2021 15:56:44.226 | INFO  | org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer | LiveReload server is running on port 35729
+12-06-2021 15:56:44.259 | WARN  | org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration.openEntityManagerInViewInterceptor | spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+12-06-2021 15:56:45.614 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/users/login', POST] with []
+12-06-2021 15:56:45.615 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/', GET] with []
+12-06-2021 15:56:45.615 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/webjars/**', GET] with []
+12-06-2021 15:56:45.616 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/*.html', GET] with []
+12-06-2021 15:56:45.617 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/favicon.ico', GET] with []
+12-06-2021 15:56:45.617 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.html', GET] with []
+12-06-2021 15:56:45.618 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.css', GET] with []
+12-06-2021 15:56:45.618 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.js', GET] with []
+12-06-2021 15:56:45.619 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/city/all', GET] with []
+12-06-2021 15:56:45.648 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@8fd6e2d4, org.springframework.security.web.context.SecurityContextPersistenceFilter@1a338c99, org.springframework.security.web.header.HeaderWriterFilter@337bad21, org.springframework.web.filter.CorsFilter@ec719f8a, org.springframework.security.web.authentication.logout.LogoutFilter@9e6d5b4e, rs.ac.uns.ftn.bsep.security.auth.TokenAuthenticationFilter@723ab6c8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@68e065a9, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@72e45fac, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@17b5568d, org.springframework.security.web.session.SessionManagementFilter@e3e89410, org.springframework.security.web.access.ExceptionTranslationFilter@131dbf17, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@dfa71be7]
+12-06-2021 15:56:46.204 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start | Tomcat started on port(s): 8085 (https) 8082 (http) with context path ''
+12-06-2021 15:57:11.899 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring DispatcherServlet 'dispatcherServlet'
+12-06-2021 15:57:11.900 | INFO  | org.springframework.web.servlet.DispatcherServlet.initServletBean | Initializing Servlet 'dispatcherServlet'
+12-06-2021 15:57:11.902 | INFO  | org.springframework.web.servlet.DispatcherServlet.initServletBean | Completed initialization in 1 ms
+12-06-2021 15:57:12.348 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 15:59:56.202 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+12-06-2021 15:59:56.205 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+12-06-2021 15:59:57.049 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+12-06-2021 15:59:57.179 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Finished Spring Data repository scanning in 122 ms. Found 9 JPA repository interfaces.
+12-06-2021 15:59:57.644 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@de92cedb' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 15:59:57.651 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 15:59:58.298 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize | Tomcat initialized with port(s): 8085 (https) 8082 (http)
+12-06-2021 15:59:58.316 | INFO  | org.apache.catalina.core.StandardService.log | Starting service [Tomcat]
+12-06-2021 15:59:58.317 | INFO  | org.apache.catalina.core.StandardEngine.log | Starting Servlet engine: [Apache Tomcat/9.0.45]
+12-06-2021 15:59:58.425 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring embedded WebApplicationContext
+12-06-2021 15:59:58.426 | INFO  | org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext | Root WebApplicationContext: initialization completed in 2216 ms
+12-06-2021 15:59:58.700 | INFO  | org.hibernate.jpa.internal.util.LogHelper.logPersistenceUnitInformation | HHH000204: Processing PersistenceUnitInfo [name: default]
+12-06-2021 15:59:58.784 | INFO  | org.hibernate.Version.logVersion | HHH000412: Hibernate ORM core version 5.4.30.Final
+12-06-2021 15:59:58.930 | INFO  | org.hibernate.annotations.common.Version.<clinit> | HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+12-06-2021 15:59:59.038 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Starting...
+12-06-2021 15:59:59.319 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Start completed.
+12-06-2021 15:59:59.333 | INFO  | org.hibernate.dialect.Dialect.<init> | HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+12-06-2021 16:00:00.894 | INFO  | org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator.initiateService | HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12-06-2021 16:00:00.904 | INFO  | org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory | Initialized JPA EntityManagerFactory for persistence unit 'default'
+12-06-2021 16:00:00.943 | INFO  | org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer | LiveReload server is running on port 35729
+12-06-2021 16:00:00.968 | WARN  | org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration.openEntityManagerInViewInterceptor | spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+12-06-2021 16:00:02.368 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/users/login', POST] with []
+12-06-2021 16:00:02.368 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/', GET] with []
+12-06-2021 16:00:02.369 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/webjars/**', GET] with []
+12-06-2021 16:00:02.369 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/*.html', GET] with []
+12-06-2021 16:00:02.370 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/favicon.ico', GET] with []
+12-06-2021 16:00:02.370 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.html', GET] with []
+12-06-2021 16:00:02.370 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.css', GET] with []
+12-06-2021 16:00:02.371 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.js', GET] with []
+12-06-2021 16:00:02.371 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/city/all', GET] with []
+12-06-2021 16:00:02.401 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@10cec880, org.springframework.security.web.context.SecurityContextPersistenceFilter@8e59486b, org.springframework.security.web.header.HeaderWriterFilter@be50b634, org.springframework.web.filter.CorsFilter@4ed60a58, org.springframework.security.web.authentication.logout.LogoutFilter@a2486b79, rs.ac.uns.ftn.bsep.security.auth.TokenAuthenticationFilter@2853981a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@e1ad02c9, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@bc456ee4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@d12c8b1f, org.springframework.security.web.session.SessionManagementFilter@8df0875f, org.springframework.security.web.access.ExceptionTranslationFilter@3f65eec3, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5be275b9]
+12-06-2021 16:00:02.960 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start | Tomcat started on port(s): 8085 (https) 8082 (http) with context path ''
+12-06-2021 16:01:01.422 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring DispatcherServlet 'dispatcherServlet'
+12-06-2021 16:01:01.423 | INFO  | org.springframework.web.servlet.DispatcherServlet.initServletBean | Initializing Servlet 'dispatcherServlet'
+12-06-2021 16:01:01.425 | INFO  | org.springframework.web.servlet.DispatcherServlet.initServletBean | Completed initialization in 2 ms
+12-06-2021 16:01:01.849 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 16:02:26.844 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+12-06-2021 16:02:26.848 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+12-06-2021 16:02:27.708 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+12-06-2021 16:02:27.837 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Finished Spring Data repository scanning in 120 ms. Found 9 JPA repository interfaces.
+12-06-2021 16:02:28.361 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@150358e3' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 16:02:28.368 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 16:02:28.990 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize | Tomcat initialized with port(s): 8085 (https) 8082 (http)
+12-06-2021 16:02:29.007 | INFO  | org.apache.catalina.core.StandardService.log | Starting service [Tomcat]
+12-06-2021 16:02:29.008 | INFO  | org.apache.catalina.core.StandardEngine.log | Starting Servlet engine: [Apache Tomcat/9.0.45]
+12-06-2021 16:02:29.131 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring embedded WebApplicationContext
+12-06-2021 16:02:29.132 | INFO  | org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext | Root WebApplicationContext: initialization completed in 2283 ms
+12-06-2021 16:02:29.401 | INFO  | org.hibernate.jpa.internal.util.LogHelper.logPersistenceUnitInformation | HHH000204: Processing PersistenceUnitInfo [name: default]
+12-06-2021 16:02:29.445 | INFO  | org.hibernate.Version.logVersion | HHH000412: Hibernate ORM core version 5.4.30.Final
+12-06-2021 16:02:29.579 | INFO  | org.hibernate.annotations.common.Version.<clinit> | HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+12-06-2021 16:02:29.746 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Starting...
+12-06-2021 16:02:29.929 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Start completed.
+12-06-2021 16:02:29.945 | INFO  | org.hibernate.dialect.Dialect.<init> | HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+12-06-2021 16:02:31.020 | WARN  | org.hibernate.engine.jdbc.spi.SqlExceptionHelper.logWarning | SQL Warning Code: 0, SQLState: 00000
+12-06-2021 16:02:31.021 | WARN  | org.hibernate.engine.jdbc.spi.SqlExceptionHelper.logWarning | constraint "uk_d3jidhumr0b2snmyuhwe0dupq" of relation "end_entity_certificates" does not exist, skipping
+12-06-2021 16:02:31.030 | WARN  | org.hibernate.engine.jdbc.spi.SqlExceptionHelper.logWarning | SQL Warning Code: 0, SQLState: 00000
+12-06-2021 16:02:31.031 | WARN  | org.hibernate.engine.jdbc.spi.SqlExceptionHelper.logWarning | constraint "uk_r43af9ap4edm43mmtq01oddj6" of relation "users" does not exist, skipping
+12-06-2021 16:02:31.063 | INFO  | org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator.initiateService | HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12-06-2021 16:02:31.074 | INFO  | org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory | Initialized JPA EntityManagerFactory for persistence unit 'default'
+12-06-2021 16:02:31.128 | INFO  | org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer | LiveReload server is running on port 35729
+12-06-2021 16:02:31.158 | WARN  | org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration.openEntityManagerInViewInterceptor | spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+12-06-2021 16:02:32.603 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/users/login', POST] with []
+12-06-2021 16:02:32.604 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/', GET] with []
+12-06-2021 16:02:32.605 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/webjars/**', GET] with []
+12-06-2021 16:02:32.606 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/*.html', GET] with []
+12-06-2021 16:02:32.607 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/favicon.ico', GET] with []
+12-06-2021 16:02:32.607 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.html', GET] with []
+12-06-2021 16:02:32.608 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.css', GET] with []
+12-06-2021 16:02:32.608 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.js', GET] with []
+12-06-2021 16:02:32.609 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/city/all', GET] with []
+12-06-2021 16:02:32.651 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@20c99594, org.springframework.security.web.context.SecurityContextPersistenceFilter@e925bbef, org.springframework.security.web.header.HeaderWriterFilter@cc996f42, org.springframework.web.filter.CorsFilter@67947597, org.springframework.security.web.authentication.logout.LogoutFilter@f05003bb, rs.ac.uns.ftn.bsep.security.auth.TokenAuthenticationFilter@79246f60, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6f5ecb8c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@e9b7b535, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@57cd1b98, org.springframework.security.web.session.SessionManagementFilter@5a5c7a98, org.springframework.security.web.access.ExceptionTranslationFilter@7ab63885, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@f8225766]
+12-06-2021 16:02:33.182 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start | Tomcat started on port(s): 8085 (https) 8082 (http) with context path ''
+12-06-2021 16:02:36.399 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring DispatcherServlet 'dispatcherServlet'
+12-06-2021 16:02:36.399 | INFO  | org.springframework.web.servlet.DispatcherServlet.initServletBean | Initializing Servlet 'dispatcherServlet'
+12-06-2021 16:02:36.400 | INFO  | org.springframework.web.servlet.DispatcherServlet.initServletBean | Completed initialization in 1 ms
+12-06-2021 16:02:38.752 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.register | Successfully registered user : proba@nesto.com
+12-06-2021 16:03:09.523 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 16:05:22.426 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 16:07:18.609 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 16:09:02.245 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 16:09:42.833 | INFO  | rs.ac.uns.ftn.bsep.BsepApplication.logStarting | Starting BsepApplication using Java 11.0.10 on LAPTOP-G8UDCIJ3 with PID 20536 (C:\Users\user\Documents\Bezbednost\New folder\BSEP\bsep\target\classes started by user in C:\Users\user\Documents\Bezbednost\New folder\BSEP\bsep)
+12-06-2021 16:09:42.841 | INFO  | rs.ac.uns.ftn.bsep.BsepApplication.logStartupProfileInfo | No active profile set, falling back to default profiles: default
+12-06-2021 16:09:42.974 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+12-06-2021 16:09:42.979 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+12-06-2021 16:09:43.898 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+12-06-2021 16:09:44.028 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Finished Spring Data repository scanning in 120 ms. Found 9 JPA repository interfaces.
+12-06-2021 16:09:44.430 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@fadde63d' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 16:09:44.437 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 16:09:45.009 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize | Tomcat initialized with port(s): 8085 (https) 8082 (http)
+12-06-2021 16:09:45.027 | INFO  | org.apache.catalina.core.StandardService.log | Starting service [Tomcat]
+12-06-2021 16:09:45.028 | INFO  | org.apache.catalina.core.StandardEngine.log | Starting Servlet engine: [Apache Tomcat/9.0.45]
+12-06-2021 16:09:45.138 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring embedded WebApplicationContext
+12-06-2021 16:09:45.139 | INFO  | org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext | Root WebApplicationContext: initialization completed in 2157 ms
+12-06-2021 16:09:45.343 | INFO  | org.hibernate.jpa.internal.util.LogHelper.logPersistenceUnitInformation | HHH000204: Processing PersistenceUnitInfo [name: default]
+12-06-2021 16:09:45.387 | INFO  | org.hibernate.Version.logVersion | HHH000412: Hibernate ORM core version 5.4.30.Final
+12-06-2021 16:09:45.500 | INFO  | org.hibernate.annotations.common.Version.<clinit> | HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+12-06-2021 16:09:45.599 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Starting...
+12-06-2021 16:09:45.752 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Start completed.
+12-06-2021 16:09:45.765 | INFO  | org.hibernate.dialect.Dialect.<init> | HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+12-06-2021 16:09:47.151 | INFO  | org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator.initiateService | HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12-06-2021 16:09:47.162 | INFO  | org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory | Initialized JPA EntityManagerFactory for persistence unit 'default'
+12-06-2021 16:09:47.216 | INFO  | org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer | LiveReload server is running on port 35729
+12-06-2021 16:09:47.244 | WARN  | org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration.openEntityManagerInViewInterceptor | spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+12-06-2021 16:09:48.648 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/users/login', POST] with []
+12-06-2021 16:09:48.649 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/', GET] with []
+12-06-2021 16:09:48.649 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/webjars/**', GET] with []
+12-06-2021 16:09:48.650 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/*.html', GET] with []
+12-06-2021 16:09:48.650 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/favicon.ico', GET] with []
+12-06-2021 16:09:48.650 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.html', GET] with []
+12-06-2021 16:09:48.651 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.css', GET] with []
+12-06-2021 16:09:48.651 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.js', GET] with []
+12-06-2021 16:09:48.651 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/city/all', GET] with []
+12-06-2021 16:09:48.701 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1382fd6b, org.springframework.security.web.context.SecurityContextPersistenceFilter@754464be, org.springframework.security.web.header.HeaderWriterFilter@4ff6c650, org.springframework.web.filter.CorsFilter@7a67d404, org.springframework.security.web.authentication.logout.LogoutFilter@37d92d6, rs.ac.uns.ftn.bsep.security.auth.TokenAuthenticationFilter@882dc22c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@da1888f1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@b2877fec, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@32a6b080, org.springframework.security.web.session.SessionManagementFilter@9138f233, org.springframework.security.web.access.ExceptionTranslationFilter@4e1e5bda, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@8a476596]
+12-06-2021 16:09:49.295 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start | Tomcat started on port(s): 8085 (https) 8082 (http) with context path ''
+12-06-2021 16:09:49.313 | INFO  | rs.ac.uns.ftn.bsep.BsepApplication.logStarted | Started BsepApplication in 7.292 seconds (JVM running for 8.918)
+12-06-2021 16:16:54.334 | INFO  | rs.ac.uns.ftn.bsep.BsepApplication.logStarting | Starting BsepApplication using Java 11.0.10 on LAPTOP-G8UDCIJ3 with PID 11188 (C:\Users\user\Documents\Bezbednost\New folder\BSEP\bsep\target\classes started by user in C:\Users\user\Documents\Bezbednost\New folder\BSEP\bsep)
+12-06-2021 16:16:54.342 | INFO  | rs.ac.uns.ftn.bsep.BsepApplication.logStartupProfileInfo | No active profile set, falling back to default profiles: default
+12-06-2021 16:16:54.456 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+12-06-2021 16:16:54.457 | INFO  | org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor.logTo | For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+12-06-2021 16:16:55.523 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+12-06-2021 16:16:55.687 | INFO  | org.springframework.data.repository.config.RepositoryConfigurationDelegate.registerRepositoriesIn | Finished Spring Data repository scanning in 152 ms. Found 9 JPA repository interfaces.
+12-06-2021 16:16:56.179 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@f6a41b8f' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 16:16:56.184 | INFO  | org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization | Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+12-06-2021 16:16:56.927 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize | Tomcat initialized with port(s): 8085 (https) 8082 (http)
+12-06-2021 16:16:56.950 | INFO  | org.apache.catalina.core.StandardService.log | Starting service [Tomcat]
+12-06-2021 16:16:56.951 | INFO  | org.apache.catalina.core.StandardEngine.log | Starting Servlet engine: [Apache Tomcat/9.0.45]
+12-06-2021 16:16:57.085 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring embedded WebApplicationContext
+12-06-2021 16:16:57.086 | INFO  | org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext | Root WebApplicationContext: initialization completed in 2627 ms
+12-06-2021 16:16:57.395 | INFO  | org.hibernate.jpa.internal.util.LogHelper.logPersistenceUnitInformation | HHH000204: Processing PersistenceUnitInfo [name: default]
+12-06-2021 16:16:57.439 | INFO  | org.hibernate.Version.logVersion | HHH000412: Hibernate ORM core version 5.4.30.Final
+12-06-2021 16:16:57.568 | INFO  | org.hibernate.annotations.common.Version.<clinit> | HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+12-06-2021 16:16:57.707 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Starting...
+12-06-2021 16:16:57.883 | INFO  | com.zaxxer.hikari.HikariDataSource.getConnection | HikariPool-1 - Start completed.
+12-06-2021 16:16:57.899 | INFO  | org.hibernate.dialect.Dialect.<init> | HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL95Dialect
+12-06-2021 16:16:59.349 | INFO  | org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator.initiateService | HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+12-06-2021 16:16:59.359 | INFO  | org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory | Initialized JPA EntityManagerFactory for persistence unit 'default'
+12-06-2021 16:16:59.414 | INFO  | org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer | LiveReload server is running on port 35729
+12-06-2021 16:16:59.454 | WARN  | org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration.openEntityManagerInViewInterceptor | spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+12-06-2021 16:17:00.823 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/users/login', POST] with []
+12-06-2021 16:17:00.825 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/', GET] with []
+12-06-2021 16:17:00.825 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/webjars/**', GET] with []
+12-06-2021 16:17:00.826 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/*.html', GET] with []
+12-06-2021 16:17:00.826 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/favicon.ico', GET] with []
+12-06-2021 16:17:00.827 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.html', GET] with []
+12-06-2021 16:17:00.827 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.css', GET] with []
+12-06-2021 16:17:00.828 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/**/*.js', GET] with []
+12-06-2021 16:17:00.828 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure Ant [pattern='/api/city/all', GET] with []
+12-06-2021 16:17:00.875 | INFO  | org.springframework.security.web.DefaultSecurityFilterChain.<init> | Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@efa98ff, org.springframework.security.web.context.SecurityContextPersistenceFilter@1435d937, org.springframework.security.web.header.HeaderWriterFilter@7e9249e7, org.springframework.web.filter.CorsFilter@3b85f799, org.springframework.security.web.authentication.logout.LogoutFilter@1b4bffcf, rs.ac.uns.ftn.bsep.security.auth.TokenAuthenticationFilter@b260d13c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@ddfa685f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7a731704, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@e1b00f6b, org.springframework.security.web.session.SessionManagementFilter@38501d0, org.springframework.security.web.access.ExceptionTranslationFilter@607ea3ef, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@e2b54069]
+12-06-2021 16:17:01.502 | INFO  | org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start | Tomcat started on port(s): 8085 (https) 8082 (http) with context path ''
+12-06-2021 16:17:01.521 | INFO  | rs.ac.uns.ftn.bsep.BsepApplication.logStarted | Started BsepApplication in 7.725 seconds (JVM running for 9.238)
+12-06-2021 16:17:05.103 | INFO  | org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].log | Initializing Spring DispatcherServlet 'dispatcherServlet'
+12-06-2021 16:17:05.104 | INFO  | org.springframework.web.servlet.DispatcherServlet.initServletBean | Initializing Servlet 'dispatcherServlet'
+12-06-2021 16:17:05.106 | INFO  | org.springframework.web.servlet.DispatcherServlet.initServletBean | Completed initialization in 2 ms
+12-06-2021 16:17:06.932 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.register | Successfully registered user : proba@nesto.com
+12-06-2021 16:17:37.216 | WARN  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Failed to log in proba@nesto.com, from: http://localhost:8080
+12-06-2021 16:18:03.245 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Successfully logged in proba@nesto.com
+12-06-2021 16:19:49.791 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 900483
+12-06-2021 16:19:49.830 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Code verified for user:proba@nesto.com
+12-06-2021 16:28:04.137 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.register | Successfully registered user : acoaco@aco.com
+12-06-2021 16:30:07.988 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.register | Successfully registered user : proba@aaa.com
+12-06-2021 16:30:53.965 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.createAuthenticationToken | Successfully logged in acoaco@aco.com
+12-06-2021 16:31:13.704 | INFO  | rs.ac.uns.ftn.bsep.controller.UserController.verifyCode | 228826
+12-06-2021 16:31:13.710 | INFO  | rs.ac.uns.ftn.bsep.service.UserService.verifyCode | Code verified for user:acoaco@aco.com

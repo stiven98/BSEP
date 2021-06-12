@@ -8,12 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rs.ac.uns.ftn.bsep.domain.dto.LoginDTO;
-import rs.ac.uns.ftn.bsep.domain.dto.LoginResponseDTO;
-import rs.ac.uns.ftn.bsep.domain.dto.RegisterUserDTO;
-import rs.ac.uns.ftn.bsep.domain.dto.ResetPasswordDTO;
+import rs.ac.uns.ftn.bsep.domain.dto.*;
 import rs.ac.uns.ftn.bsep.domain.users.User;
 import rs.ac.uns.ftn.bsep.service.UserService;
+import rs.ac.uns.ftn.bsep.service.impl.TotpManager;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +24,9 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TotpManager totpManager;
 
       private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -71,6 +72,17 @@ public class UserController {
         return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
 
+    @PostMapping("/verifyCode")
+    public ResponseEntity<?> verifyCode(@RequestBody VerifyCodeDTO dto){
+        log.info(dto.getCode());
+        if(userService.verifyCode(dto.getUsername(),dto.getCode())){
+            //log.info("Valid reset password request | " + id);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+       // log.warn("Invalid reset password request | " +id);
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
+    }
+
     @PostMapping("/activate/{id}")
     public ResponseEntity<?> activateAccount(@PathVariable("id")String id){
         if(userService.activateAccount(UUID.fromString(id))){
@@ -80,11 +92,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDTO dto){
+    public ResponseEntity<RegisterUserResponse> register(@RequestBody RegisterUserDTO dto){
         User user= userService.register(dto);
         if(user!=null){
             log.info("Successfully registered user : " + user.getUsername());
-            return new ResponseEntity<User>(user,HttpStatus.OK);
+            RegisterUserResponse response=new RegisterUserResponse(user.getUsername(),totpManager.getUriForImage(user.getSecret()));
+            return new ResponseEntity<RegisterUserResponse>(response,HttpStatus.OK);
         }
         log.warn("Bad register request user: "+dto.getEmail());
         return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);

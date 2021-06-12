@@ -17,6 +17,18 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="verifyCode" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-input v-model="code" label="Enter your code:"/>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn v-on:click="verifyCodePost" flat label="Verify" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
       <q-input
         filled
         v-model="username"
@@ -54,7 +66,9 @@ export default {
       username: '',
       pass: '',
       forgotPass: false,
-      forgotEmail: ''
+      forgotEmail: '',
+      verifyCode: false,
+      code: ''
     }
   },
   beforeMount () {
@@ -73,12 +87,13 @@ export default {
           localStorage.setItem('token', response.data.token)
           if (response.data.authorityList.includes('ROLE_USER')) {
             localStorage.setItem('role', 'ROLE_USER')
-            this.$router.push('userHome')
+            // this.$router.push('userHome')
           }
           if (response.data.authorityList.includes('ROLE_ADMIN')) {
             localStorage.setItem('role', 'ROLE_ADMIN')
-            this.$router.push('adminHome')
+            // this.$router.push('adminHome')
           }
+          this.verifyCode = true
         })
         .catch(err => {
           console.log(err)
@@ -93,6 +108,21 @@ export default {
     specialCharacter (val) {
       const format = /^((?![<>?=+-;:'/,]).)*$/
       return format.test(val) || 'Must not contain special characters!'
+    },
+    verifyCodePost () {
+      var data = {
+        username: this.username,
+        code: this.code
+      }
+      this.$axios.post('https://localhost:8085/api/users/verifyCode', data)
+        .then(res => {
+          if (localStorage.getItem('role') === 'ROLE_USER') { this.$router.push('userHome') }
+          if (localStorage.getItem('role') === 'ROLE_ADMIN') { this.$router.push('adminHome') }
+        })
+        .catch(err => {
+          console.log(err)
+          alert('invalid verification code')
+        })
     }
   }
 }

@@ -1,5 +1,17 @@
 <template>
     <div class="q-pa-xl q-mt-xl row justify-center">
+        <q-dialog v-model="imgDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-img v-bind:src="imgURL"/>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Login" @click="goLogin"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
       <div class="col-2" >
         <q-form
       @submit="onSubmit"
@@ -82,7 +94,9 @@ export default {
       firstname: '',
       lastname: '',
       commonName: '',
-      role: 'user'
+      role: 'user',
+      imgURL: '',
+      imgDialog: false
     }
   },
   methods: {
@@ -99,12 +113,12 @@ export default {
             type: 'positive',
             message: 'Account created succesfully.'
           })
-          if (this.admin) {
-            this.$router.push('/adminHome')
-            return
-          }
-          this.$router.push('/')
+          this.imgURL = response.data.qruri
+          this.imgDialog = true
         })
+    },
+    goLogin () {
+      this.$router.push('/')
     },
     isValidEmail (val) {
       const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/

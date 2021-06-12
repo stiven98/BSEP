@@ -49,6 +49,8 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
     @Autowired
     PrivilegeRepository privilegeRepository;
+    @Autowired
+    TotpManager totpManager;
 
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -186,6 +188,7 @@ public class UserServiceImpl implements UserService {
                 List<Role> authorities=new ArrayList<>();
                 authorities.add(authorityAdmin);
                 admin.setRoles(authorities);
+                admin.setSecret(totpManager.generateSecret());
                 user= userRepository.save(admin);
                 break;
             case intermediate:
@@ -197,6 +200,7 @@ public class UserServiceImpl implements UserService {
                 List<Role> authoritiesIntermediate=new ArrayList<>();
                 authoritiesIntermediate.add(authorityUser);
                 intermediate.setRoles(authoritiesIntermediate);
+                intermediate.setSecret(totpManager.generateSecret());
                 user = userRepository.save(intermediate);
                 break;
             case user:
@@ -208,6 +212,7 @@ public class UserServiceImpl implements UserService {
                 List<Role> authorities1=new ArrayList<>();
                 authorities1.add(authorityUser);
                 endEntity.setRoles(authorities1);
+                endEntity.setSecret(totpManager.generateSecret());
                 user= userRepository.save(endEntity);
                 break;
         }
@@ -227,6 +232,22 @@ public class UserServiceImpl implements UserService {
             return  true;
         }
         return false;
+    }
+
+    @Override
+    public boolean verifyCode(String username, String code) {
+        User user=userRepository.findUserByEmail(username);
+        if(user==null){
+            log.warn("User " + username + "not found");
+            return false;
+        }
+        if(totpManager.verifyCode(code,user.getSecret())){
+            log.info("Code verified for user:"+username);
+            return true;
+        }
+        log.warn("Invalid code for: " + username);
+        return false;
+
     }
 
     @Override
